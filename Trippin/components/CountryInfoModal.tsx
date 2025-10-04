@@ -118,7 +118,7 @@ export default function CountryInfoModal({
           }}
         />
 
-        <Button title={isVisited ? "You've been here!" : "I was here"} variant={isVisited ?  "secondary" : "secondaryOutline"} onPress={() => setIsVisited(true)}></Button>
+        <Button title={isVisited ? "You've been here!" : "I was here"} variant={isVisited ?  "secondary" : "secondaryOutline"} onPress={() => setIsVisited((prev) => !prev)}></Button>
 
         {/* Tabs */}
         <View style={styles.tabsContainer}>
@@ -191,6 +191,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xFontSize,
     fontWeight: "600",
     fontFamily: fontFamily.playball,
+    maxWidth: "70%",
   },
   text: { opacity: 0.8 },
   cta: {
