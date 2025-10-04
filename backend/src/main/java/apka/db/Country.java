@@ -1,17 +1,23 @@
 package apka.db;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.*;
 
+@Builder
 @Entity
 @Table(
         name = "countries",
         uniqueConstraints = @UniqueConstraint(columnNames = {"iso3"})
 )
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +31,5 @@ public class Country {
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CountryRating> ratings;
-
 }
 

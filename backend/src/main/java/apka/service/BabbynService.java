@@ -4,6 +4,7 @@ import apka.db.Country;
 import apka.db.User;
 import apka.repository.CountryRepository;
 import apka.repository.UserRepository;
+import apka.utils.CountryIsoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BabbynService {
 
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private CountryRepository countryRepository;
+    private CountryService countryService;
 
     public Long saveUser(){
         User saved = userRepository.save(new User());
@@ -25,10 +25,10 @@ public class BabbynService {
     }
 
     public void addCountry(Long userId, String countryName) {
-        Optional<Country> country = countryRepository.findByName(countryName);
-        if (country.isPresent()){
+        Optional<Country> existingCountry = countryRepository.findByName(countryName);
+        Country country = existingCountry.orElseGet(
+                () -> countryService.addNewCountry(countryName));
 
-        }
 
     }
 }

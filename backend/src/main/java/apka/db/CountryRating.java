@@ -1,15 +1,21 @@
 package apka.db;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Getter @Setter
 @Entity
 @Table(
         name = "country_ratings",
         uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "country_id", "type"})
 )
+@NoArgsConstructor
+@AllArgsConstructor
 public class CountryRating {
 
     @Id
