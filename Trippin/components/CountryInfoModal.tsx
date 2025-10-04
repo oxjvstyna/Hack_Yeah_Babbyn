@@ -148,9 +148,9 @@ export default function CountryInfoModal({
         )}
 
         {/* Close Button */}
-        <Pressable style={styles.cta} onPress={onClose}>
+        {/* <Pressable style={styles.cta} onPress={onClose}>
           <Text style={styles.ctaText}>Close</Text>
-        </Pressable>
+        </Pressable> */}
         {/* </ScrollView> */}
       </View>
     </Modal>
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
     maxHeight: "80%",
+    paddingBottom: 30,
   },
   title: {
     fontSize: fontSize.xFontSize,

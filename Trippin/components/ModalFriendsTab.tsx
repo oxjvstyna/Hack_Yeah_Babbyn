@@ -4,7 +4,7 @@ import { Text, ScrollView } from "react-native";
 
 export default function ModalFriendsTab({ styles, ...props }) {
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Text>dupa</Text>
     </ScrollView>
   );

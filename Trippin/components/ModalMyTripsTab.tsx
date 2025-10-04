@@ -4,7 +4,7 @@ import { View, Text, Image, ScrollView } from "react-native";
 
 export default function ModalMyTripsTab({ styles, ...props }) {
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Star title="My fun rating" />
       <Star title="My security rating" />
       <Text style={styles.sectionTitle}>My Gallery</Text>
