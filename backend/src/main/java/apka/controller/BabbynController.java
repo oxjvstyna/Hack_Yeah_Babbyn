@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
@@ -20,11 +19,6 @@ public class BabbynController {
 
     public BabbynController(BabbynService service) {
         this.service = service;
-    }
-
-    @PostMapping("/")
-    public ResponseEntity<UUID> saveUser() {
-        return null;
     }
 
     @PostMapping("/countries/{userId}")

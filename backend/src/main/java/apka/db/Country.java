@@ -13,8 +13,9 @@ import java.util.*;
 )
 @Getter @Setter
 public class Country {
-    @Id @GeneratedValue
-    private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(unique = true, length = 3)
     private String iso3;
