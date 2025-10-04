@@ -6,15 +6,15 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import Star from "./Star";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import primaryColors from "@/properties/colors";
-import ModalMyTripsTab from "@/components/ModalMyTripsTab"
-import ModalFriendsTab from "@/components/ModalFriendsTab"
+import ModalMyTripsTab from "@/components/ModalMyTripsTab";
+import ModalFriendsTab from "@/components/ModalFriendsTab";
 
 type CountryInfoModalProps = {
   visible: boolean;
@@ -39,92 +39,104 @@ export default function CountryInfoModal({
       onRequestClose={onClose}
     >
       <Pressable style={styles.backdrop} onPress={onClose} />
+
       <View style={styles.sheet}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
+        <ScrollView
+          style={{ flexGrow: 0 }}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.title}>{name ?? ""}</Text>
+          {/* Header */}
           <View
             style={{
+              flex: 1,
               flexDirection: "row",
+              justifyContent: "space-between",
               alignItems: "center",
-              columnGap: 16,
             }}
           >
-
-            <View style={{ position: "relative" }}>
-              <FontAwesome6
-                name="shield"
-                size={fontSize.xFontSize}
-                color="black"
-              />
-              <Text
-                style={{
-                  position: "absolute",
-                  top: 9,
-                  left: 6.5,
-                  color: primaryColors.lightText,
-                  fontSize: fontSize.smallFontSize,
-                  fontWeight: "700",
-                }}
-              >
-                3.2
-              </Text>
+            <Text style={styles.title}>{name ?? ""}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                columnGap: 16,
+              }}
+            >
+              <View style={{ position: "relative" }}>
+                <FontAwesome6
+                  name="shield"
+                  size={fontSize.xFontSize}
+                  color="black"
+                />
+                <Text
+                  style={{
+                    position: "absolute",
+                    top: 9,
+                    left: 6.5,
+                    color: primaryColors.lightText,
+                    fontSize: fontSize.smallFontSize,
+                    fontWeight: "700",
+                  }}
+                >
+                  3.2
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        <View
-          style={{
-            borderBottomColor: "black",
-            borderBottomWidth: 1,
-          }}
-        />
+          {/* Divider */}
+          <View
+            style={{
+              borderBottomColor: "black",
+              borderBottomWidth: 1,
+              marginVertical: 8,
+            }}
+          />
 
-        <View style={styles.tabsContainer}>
-          <TouchableOpacity
-            onPress={() => setSelectedTab("trips")}
-            style={styles.tabItem}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                selectedTab === "trips" ? styles.tabActive : null,
-              ]}
+          {/* Tabs */}
+          <View style={styles.tabsContainer}>
+            <TouchableOpacity
+              onPress={() => setSelectedTab("trips")}
+              style={styles.tabItem}
             >
-              My Trips
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={[
+                  styles.tabText,
+                  selectedTab === "trips" ? styles.tabActive : null,
+                ]}
+              >
+                My Trips
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => setSelectedTab("friends")}
-            style={styles.tabItem}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                selectedTab === "friends" ? styles.tabActive : null,
-              ]}
+            <TouchableOpacity
+              onPress={() => setSelectedTab("friends")}
+              style={styles.tabItem}
             >
-              Friends
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={[
+                  styles.tabText,
+                  selectedTab === "friends" ? styles.tabActive : null,
+                ]}
+              >
+                Friends
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-        {selectedTab === "friends" ? (
-          <ModalFriendsTab styles={styles} />
-        ) : (
-          <ModalMyTripsTab styles={styles} />
-        )}
+          {/* Tab Content */}
+          {selectedTab === "friends" ? (
+            <ModalFriendsTab styles={styles} />
+          ) : (
+            <ModalMyTripsTab styles={styles} />
+          )}
 
-        <Pressable style={styles.cta} onPress={onClose}>
-          <Text style={styles.ctaText}>Close</Text>
-        </Pressable>
+          {/* Close Button */}
+          <Pressable style={styles.cta} onPress={onClose}>
+            <Text style={styles.ctaText}>Close</Text>
+          </Pressable>
+        </ScrollView>
       </View>
     </Modal>
   );
@@ -146,6 +158,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 10,
+    maxHeight: "80%", 
   },
   title: {
     fontSize: fontSize.xFontSize,
