@@ -15,6 +15,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import primaryColors from "@/properties/colors";
 import ModalMyTripsTab from "@/components/ModalMyTripsTab";
 import ModalFriendsTab from "@/components/ModalFriendsTab";
+import Button from "./Button";
 
 type CountryInfoModalProps = {
   visible: boolean;
@@ -30,6 +31,7 @@ export default function CountryInfoModal({
   children,
 }: CountryInfoModalProps) {
   const [selectedTab, setSelectedTab] = useState<"trips" | "friends">("trips");
+  const [isVisited, setIsVisited] = useState<boolean>(false);
 
   return (
     <Modal
@@ -108,6 +110,8 @@ export default function CountryInfoModal({
             marginVertical: 8,
           }}
         />
+
+        <Button title="You've been here!" variant={isVisited ?  "secondary" : "secondaryOutline"} onPress={() => setIsVisited(true)}></Button>
 
         {/* Tabs */}
         <View style={styles.tabsContainer}>
@@ -225,8 +229,10 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
+    justifyContent: "space-around",
+    borderBottomWidth: 1,
+    borderColor: "#A1C4D2",
+    marginBottom: 20,
   },
   tabItem: {
     paddingVertical: 8,
@@ -237,13 +243,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#1E3D58",
     fontStyle: "italic",
-    textAlign: "center",
-    paddingBottom: 4,
-    width: "100%",
   },
   tabActive: {
     color: "#397C8D",
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderColor: "#397C8D",
   },
   sectionTitle: {
