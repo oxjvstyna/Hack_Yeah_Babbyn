@@ -1,10 +1,16 @@
 package apka.controller;
 
 
+import apka.db.Country;
 import apka.service.BabbynService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,4 +20,9 @@ public class CountryController {
 
     @Autowired
     private BabbynService babbynService;
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<Long> addCountry(@PathVariable Long userId, @RequestParam String countryName) {
+        return ResponseEntity.ok(babbynService.saveUser());
+    }
 }
