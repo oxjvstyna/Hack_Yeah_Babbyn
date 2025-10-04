@@ -4,6 +4,7 @@ import { View, StyleSheet } from "react-native";
 import { HapticTab } from "@/components/haptic-tab";
 import primaryColors from "@/properties/colors";
 import Icon from "react-native-vector-icons/Feather";
+import { generalStyle } from "@/properties/styles/generalStyles";
 
 export default function TabLayout() {
   return (
@@ -65,10 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     backgroundColor: primaryColors.surface,
     borderTopWidth: 0,
-    shadowColor: primaryColors.surfaceDark,
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 4 },
+    ...generalStyle.shadow,
     elevation: 12,
     paddingHorizontal: 24,
   },

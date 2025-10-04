@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainStyle } from "@/properties/styles/mainStyles";
+import primaryColors from "@/properties/colors";
+import { generalStyle } from "@/properties/styles/generalStyles";
 
 const posts = [
   {
@@ -96,12 +98,12 @@ const styles = StyleSheet.create({
     color: "#001F2D",
   },
   card: {
-    backgroundColor: "#FFF",
+    backgroundColor: primaryColors.surface,
     borderRadius: 8,
     padding: 12,
-    marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#DADADA",
+    borderColor: primaryColors.gray,
+    ...generalStyle.shadow,
   },
   daysAgo: { fontSize: 12, color: "#555", marginBottom: 8 },
   row: { flexDirection: "row", alignItems: "center" },

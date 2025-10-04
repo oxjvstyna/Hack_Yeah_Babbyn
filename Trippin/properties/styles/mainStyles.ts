@@ -13,7 +13,8 @@ export const mainStyle = StyleSheet.create({
   scrollView: {
     paddingVertical: paddingSize.medium,
     paddingHorizontal: paddingSize.mediumBig,
-    rowGap: paddingSize.mediumBig,
+    rowGap: paddingSize.medium,
+    paddingBottom: paddingSize.xxBig,
   },
   header: {
     paddingHorizontal: 20,

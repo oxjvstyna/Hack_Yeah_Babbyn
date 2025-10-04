@@ -33,6 +33,13 @@ export default function CountryInfoModal({
   const [selectedTab, setSelectedTab] = useState<"trips" | "friends">("trips");
   const [isVisited, setIsVisited] = useState<boolean>(false);
 
+  React.useEffect(() => {
+    if (visible) {
+      setSelectedTab("trips");
+      setIsVisited(false);
+    }
+  }, [name]);
+
   return (
     <Modal
       visible={visible}
@@ -111,7 +118,11 @@ export default function CountryInfoModal({
           }}
         />
 
-        <Button title="You've been here!" variant={isVisited ?  "secondary" : "secondaryOutline"} onPress={() => setIsVisited(true)}></Button>
+        <Button
+          title="You've been here!"
+          variant={isVisited ? "secondary" : "secondaryOutline"}
+          onPress={() => setIsVisited(true)}
+        ></Button>
 
         {/* Tabs */}
         <View style={styles.tabsContainer}>
