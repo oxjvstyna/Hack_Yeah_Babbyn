@@ -33,6 +33,13 @@ export default function CountryInfoModal({
   const [selectedTab, setSelectedTab] = useState<"trips" | "friends">("trips");
   const [isVisited, setIsVisited] = useState<boolean>(false);
 
+  React.useEffect(() => {
+    if (visible) {
+      setSelectedTab("trips");
+      setIsVisited(false);
+    }
+  }, [name]);
+
   return (
     <Modal
       visible={visible}
