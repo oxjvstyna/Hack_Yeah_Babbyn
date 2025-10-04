@@ -19,8 +19,7 @@ public class BabbynController {
 
     @PostMapping("/place")
     public String test(@RequestBody User user) {
-        System.out.println(user.toString());
-        service.test();
+        service.findPlaceParameters(1, null, null);
         return "ok";
     }
 }
