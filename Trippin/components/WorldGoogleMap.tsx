@@ -89,6 +89,20 @@ function intersects(region: Region, bbox: RNPolygon["bbox"], pad = 5): boolean {
   );
 }
 
+const darkStyle = [
+  { elementType: "geometry", stylers: [{ color: "#1b1b1b" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#8b949e" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#0f0f10" }] },
+  {
+    featureType: "administrative",
+    elementType: "labels.icon",
+    stylers: [{ visibility: "off" }],
+  },
+  { featureType: "poi", stylers: [{ visibility: "off" }] },
+  { featureType: "road", stylers: [{ color: "#232323" }] },
+  { featureType: "water", stylers: [{ color: "#0b3d5c" }] },
+];
+
 export default function WorldGoogleMap() {
   const [selectedIso, setSelectedIso] = useState<string | null>(null);
   const [region, setRegion] = useState<Region>({
@@ -126,6 +140,7 @@ export default function WorldGoogleMap() {
       <MapView
         style={StyleSheet.absoluteFillObject}
         provider={PROVIDER_GOOGLE}
+        customMapStyle={darkStyle}
         initialRegion={region}
         onRegionChangeComplete={onRegionChangeComplete} // ✅
         showsCompass={false}
