@@ -20,6 +20,7 @@ public class BabbynController {
 
     @PostMapping("place")
     public String test(@RequestBody User user) {
+        System.out.println("test");
         service.test();
         System.out.println(user.toString());
         return "ok";
