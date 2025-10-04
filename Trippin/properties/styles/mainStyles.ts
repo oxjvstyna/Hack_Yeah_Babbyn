@@ -7,8 +7,8 @@ import { generalStyle } from "./generalStyles";
 export const mainStyle = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: primaryColors.lightGrey,
-    // backgroundColor: "transparent",
+    // backgroundColor: primaryColors.lightGrey,
+    backgroundColor: "transparent",
   },
   scrollView: {
     // backgroundColor: primaryColors.darkBlue,
