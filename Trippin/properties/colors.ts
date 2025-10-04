@@ -10,7 +10,7 @@ const primaryColors = {
   red: "#ED1B24",
   black: "#000000",
   countryFill: "#362f27",
-  countryOutline: "#964B00",
+  countryOutline: "#a29a93",
   water: "#a29a93",
   primary: "#023047",
   secondary: "#1A7F99",

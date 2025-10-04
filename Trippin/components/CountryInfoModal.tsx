@@ -7,9 +7,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
-import Star from "./Star";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import primaryColors from "@/properties/colors";
@@ -118,7 +116,11 @@ export default function CountryInfoModal({
           }}
         />
 
-        <Button title={isVisited ? "You've been here!" : "I was here"} variant={isVisited ?  "secondary" : "secondaryOutline"} onPress={() => setIsVisited((prev) => !prev)}></Button>
+        <Button
+          title={isVisited ? "You've been here!" : "I was here"}
+          variant={isVisited ? "secondary" : "secondaryOutline"}
+          onPress={() => setIsVisited((prev) => !prev)}
+        ></Button>
 
         {/* Tabs */}
         <View style={styles.tabsContainer}>

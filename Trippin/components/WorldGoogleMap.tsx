@@ -152,7 +152,6 @@ export default function WorldGoogleMap() {
 
           if (isHighlighted) {
             fillColor = p.iso ? overrides[p.iso] ?? defaultColor : defaultColor;
-            strokeColor = "rgba(22,163,74,1)";
           }
 
           if (isSelected) {
@@ -166,7 +165,7 @@ export default function WorldGoogleMap() {
               coordinates={p.outer}
               holes={p.holes}
               tappable
-              strokeWidth={isSelected ? 2 : 1}
+              strokeWidth={1}
               strokeColor={strokeColor}
               fillColor={fillColor}
               onPress={() => setSelectedIso(isSelected ? null : p.iso ?? null)}
