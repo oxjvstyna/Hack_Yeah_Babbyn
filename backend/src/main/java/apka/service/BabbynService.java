@@ -2,10 +2,13 @@ package apka.service;
 
 import apka.utils.JsonDatabase;
 import lombok.RequiredArgsConstructor;
+import model.Country;
 import model.Place;
 import model.User;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,4 +31,10 @@ public class BabbynService {
         jsonDatabase.addUser(users.get(0));
     }
 
+    public List<String> getCountries(int userId) {
+        return jsonDatabase.getCountriesForUser(userId)
+                .stream()
+                .map(Country::name)
+                .toList();
+    }
 }

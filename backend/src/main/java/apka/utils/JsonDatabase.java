@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +49,14 @@ public class JsonDatabase {
 
         saveDatabase(this.database);
         System.out.println(loadDatabase());
+    }
+
+    public List<Country> getCountriesForUser(int userId) {
+        return database.stream()
+                .filter(user -> user.userId() == userId)
+                .findFirst()
+                .map(User::countries)
+                .orElse(Collections.emptyList());
     }
 
     private void mergeUser(User target, User incoming) {
