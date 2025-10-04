@@ -64,6 +64,21 @@ export default function CountryInfoModal({
               }}
             >
               <View style={{ position: "relative" }}>
+                <AntDesign name="heart" size={fontSize.xFontSize} color="black" />
+                <Text
+                  style={{
+                    position: "absolute",
+                    top: 8,
+                    left: 6.5,
+                    color: primaryColors.lightText,
+                    fontSize: fontSize.smallFontSize,
+                    fontWeight: "700",
+                  }}
+                >
+                  5.0
+                </Text>
+              </View>
+              <View style={{ position: "relative" }}>
                 <FontAwesome6
                   name="shield"
                   size={fontSize.xFontSize}
@@ -158,7 +173,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 10,
-    maxHeight: "80%", 
+    maxHeight: "80%",
   },
   title: {
     fontSize: fontSize.xFontSize,
