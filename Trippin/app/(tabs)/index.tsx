@@ -6,12 +6,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
-    <SafeAreaView style={mainStyle.safeArea}>
+    <SafeAreaView style={mainStyle.safeArea} edges={["top"]}>
       {/* <ScrollView style={mainStyle.scrollView}> */}
 
       <WorldGoogleMap />
-
-      <Text style={generalStyle.basicText}>Babbynnn for win</Text>
       {/* </ScrollView> */}
     </SafeAreaView>
   );
