@@ -1,235 +1,171 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
+  View,
   Text,
   ScrollView,
-  View,
   TouchableOpacity,
-  Image,
   StyleSheet,
+  SafeAreaView,
+  Image,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
-import { mainStyle } from "@/properties/styles/mainStyles";
-import { generalStyle } from "@/properties/styles/generalStyles";
+import Icon from "react-native-vector-icons/Feather";
 
-export default function TabTwoScreen() {
-  const [selectedTab, setSelectedTab] = useState<"trips" | "friends">("trips");
+const posts = [
+  {
+    id: 1,
+    username: "alex_travels",
+    trip: "Rome, Italy 🇮🇹",
+    image: require("@/assets/images/aa.png"),
+    caption: "Such a beautiful city full of history!",
+    daysAgo: "3 days ago",
+  },
+  {
+    id: 2,
+    username: "marta.world",
+    trip: "Tokyo, Japan 🇯🇵",
+    image: require("@/assets/images/aa.png"),
+    caption: "Cherry blossoms were absolutely stunning 🌸",
+    daysAgo: "5 days ago",
+  },
+  {
+    id: 3,
+    username: "johnny_explorer",
+    trip: "Reykjavik, Iceland 🇮🇸",
+    image: require("@/assets/images/aa.png"),
+    caption: "Hot springs and northern lights ❄️🔥",
+    daysAgo: "1 week ago",
+  },
+];
+
+export default function FriendActivityScreen() {
+  const [likedPosts, setLikedPosts] = useState<number[]>([]);
+
+  const toggleLike = (id: number) => {
+    setLikedPosts((prev) =>
+      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+    );
+  };
 
   return (
-    // <SafeAreaView
-    //   style={{ flex: 1, backgroundColor: "#FFFBF6" }}
-    //   edges={["top", "bottom"]}
-    // >
-    //   <StatusBar style="dark" backgroundColor="transparent" translucent />
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.title}>Friend Activity</Text>
+      </View>
 
-    //   <ScrollView contentContainerStyle={styles.container}>
-    //     {/* --- Tytuł kraju --- */}
-    //     <Text style={styles.title}>Poland</Text>
+      {/* Content */}
+      <ScrollView contentContainerStyle={styles.scroll}>
+        {posts.map((post) => (
+          <View key={post.id} style={styles.card}>
+            <Text style={styles.daysAgo}>{post.daysAgo}</Text>
 
-    //     {/* --- Przycisk "You've been there" / "I was here" --- */}
-    //     <View
-    //       style={[
-    //         styles.beenThereButton,
-    //         selectedTab === "trips" && styles.beenThereButtonOutlined,
-    //       ]}
-    //     >
-    //       <Text
-    //         style={[
-    //           styles.beenThereText,
-    //           selectedTab === "trips" && styles.beenThereTextOutlined,
-    //         ]}
-    //       >
-    //         {selectedTab === "trips" ? "I was here" : "You’ve been there!"}
-    //       </Text>
-    //     </View>
+            <View style={styles.row}>
+              <View style={styles.avatarPlaceholder} />
+              <Text style={styles.activityText}>
+                {post.username} has been to {post.trip}
+              </Text>
+            </View>
 
-    //     {/* --- Zakładki My Trips / Friends --- */}
-    //     <View style={styles.tabsContainer}>
-    //       <TouchableOpacity
-    //         onPress={() => setSelectedTab("trips")}
-    //         style={styles.tabItem}
-    //       >
-    //         <Text
-    //           style={[
-    //             styles.tabText,
-    //             selectedTab === "trips" ? styles.tabActive : null,
-    //           ]}
-    //         >
-    //           My Trips
-    //         </Text>
-    //       </TouchableOpacity>
+            <Image source={post.image} style={styles.postImage} />
 
-    //       <TouchableOpacity
-    //         onPress={() => setSelectedTab("friends")}
-    //         style={styles.tabItem}
-    //       >
-    //         <Text
-    //           style={[
-    //             styles.tabText,
-    //             selectedTab === "friends" ? styles.tabActive : null,
-    //           ]}
-    //         >
-    //           Friends
-    //         </Text>
-    //       </TouchableOpacity>
-    //     </View>
+            <TouchableOpacity onPress={() => toggleLike(post.id)}>
+              <Text style={styles.likeButton}>
+                {likedPosts.includes(post.id) ? "❤️" : "🤍"}
+              </Text>
+            </TouchableOpacity>
 
-    //     {/* --- WIDOK ZALEŻNY OD ZAKŁADKI --- */}
-    //     {selectedTab === "friends" ? (
-    //       <>
-    //         {/* --- Sekcja Friends who visited --- */}
-    //         <Text style={styles.sectionTitle}>Friends who visited</Text>
-    //         <View style={styles.friendsRow}>
-    //           {[...Array(5)].map((_, i) => (
-    //             <View key={i} style={styles.friendCircle} />
-    //           ))}
-    //         </View>
+            <Text style={styles.caption}>{post.caption}</Text>
+          </View>
+        ))}
 
-    //         {/* --- Sekcja Friend Gallery --- */}
-    //         <Text style={styles.sectionTitle}>Friend Gallery</Text>
-    //         <View style={styles.galleryGrid}>
-    //           {[1, 2, 3].map((id) => (
-    //             <Image
-    //               key={id}
-    //               source={require("@/assets/images/aa.png")}
-    //               style={styles.galleryImage}
-    //               resizeMode="cover"
-    //             />
-    //           ))}
-    //         </View>
-    //       </>
-    //     ) : (
-    //       <>
-    //         {/* --- Sekcja My Fun Rating --- */}
-    //         <Text style={styles.sectionTitle}>My Fun Rating</Text>
-    //         <View style={styles.ratingBox}>
-    //           <Text style={styles.ratingText}>⭐⭐⭐⭐☆</Text>
-    //         </View>
-
-    //         {/* --- Sekcja My Security Rating --- */}
-    //         <Text style={styles.sectionTitle}>My Security Rating</Text>
-    //         <View style={styles.ratingBox}>
-    //           <Text style={styles.ratingText}>⭐⭐⭐☆☆</Text>
-    //         </View>
-
-    //         {/* --- Sekcja My Gallery --- */}
-    //         <Text style={styles.sectionTitle}>My Gallery</Text>
-    //         <View style={styles.galleryGrid}>
-    //           {[1, 2, 3].map((id) => (
-    //             <Image
-    //               key={id}
-    //               source={require("@/assets/images/aa.png")}
-    //               style={styles.galleryImage}
-    //               resizeMode="cover"
-    //             />
-    //           ))}
-    //         </View>
-    //       </>
-    //     )}
-    <SafeAreaView edges={["top"]} style={mainStyle.safeArea}>
-      <ScrollView style={mainStyle.scrollView}>
-        <Text style={generalStyle.basicText}>Inny ekran</Text>
+        {/* Pagination */}
+        <View style={styles.pagination}>
+          <Text style={[styles.page, styles.activePage]}>1</Text>
+          <Text style={styles.page}>2</Text>
+          <Text style={styles.page}>...</Text>
+          <Text style={styles.page}>67</Text>
+          <Text style={styles.page}>68</Text>
+        </View>
       </ScrollView>
+
+      {/* Bottom Navigation */}
+      <View style={styles.bottomNav}>
+        <TouchableOpacity>
+          <Icon name="map" size={24} color="#001F2D" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="grid" size={24} color="#001F2D" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="user" size={24} color="#001F2D" />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    paddingBottom: 40,
+  container: { flex: 1, backgroundColor: "#F9F8F4" },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#001F2D",
   },
   title: {
-    fontSize: 36,
-    fontWeight: "600",
-    fontFamily: "serif",
-    marginBottom: 10,
-    color: "#0B2239",
-  },
-  beenThereButton: {
-    backgroundColor: "#397C8D",
-    borderRadius: 25,
-    paddingVertical: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 20,
-    width: "100%",
-  },
-  beenThereButtonOutlined: {
-    backgroundColor: "#fff",
-    borderWidth: 2,
-    borderColor: "#397C8D",
-  },
-  beenThereText: {
-    color: "#fff",
+    fontSize: 24,
+    fontFamily: "Georgia",
     fontStyle: "italic",
-    fontSize: 16,
+    color: "#001F2D",
   },
-  beenThereTextOutlined: {
-    color: "#397C8D",
+  scroll: { padding: 16 },
+  card: {
+    backgroundColor: "#FFF",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#DADADA",
   },
-  tabsContainer: {
+  daysAgo: { fontSize: 12, color: "#555", marginBottom: 8 },
+  row: { flexDirection: "row", alignItems: "center" },
+  avatarPlaceholder: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#D9D9D9",
+    marginRight: 8,
+  },
+  activityText: { fontSize: 15, color: "#001F2D" },
+  postImage: {
+    height: 150,
+    width: "100%",
+    borderRadius: 8,
+    marginVertical: 8,
+    resizeMode: "cover",
+  },
+  likeButton: { fontSize: 24, marginBottom: 5 },
+  caption: { fontSize: 14, color: "#333" },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 8,
+  },
+  page: { marginHorizontal: 4, color: "#001F2D" },
+  activePage: {
+    backgroundColor: "#007C91",
+    color: "#FFF",
+    borderRadius: 15,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  bottomNav: {
     flexDirection: "row",
     justifyContent: "space-around",
-    borderBottomWidth: 1,
-    borderColor: "#A1C4D2",
-    marginBottom: 20,
-  },
-  tabItem: {
-    paddingVertical: 8,
-    width: "45%",
-    alignItems: "center",
-  },
-  tabText: {
-    fontSize: 16,
-    color: "#1E3D58",
-    fontStyle: "italic",
-  },
-  tabActive: {
-    color: "#397C8D",
-    borderBottomWidth: 2,
-    borderColor: "#397C8D",
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#0B2239",
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  friendsRow: {
-    flexDirection: "row",
-    gap: 10,
-  },
-  friendCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: "#D9D9D9",
-  },
-  galleryGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    gap: 10,
-  },
-  galleryImage: {
-    width: "48%",
-    height: 180,
-    borderRadius: 10,
-    backgroundColor: "#D9D9D9",
-  },
-  ratingBox: {
-    width: "100%",
-    height: 60,
-    borderRadius: 10,
-    backgroundColor: "#EAF2F5",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-  },
-  ratingText: {
-    fontSize: 24,
-    color: "#397C8D",
+    paddingVertical: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#E0E0E0",
+    backgroundColor: "#FFF",
   },
 });
