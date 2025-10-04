@@ -1,0 +1,96 @@
+[ {
+  "userId" : 1,
+  "countries" : [ {
+    "name" : "polska",
+    "places" : [ {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    }, {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    }, {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    }, {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    }, {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    }, {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    }, {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    }, {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    } ]
+  } ],
+  "friends" : [ 2 ]
+}, {
+  "userId" : 3,
+  "countries" : [ {
+    "name" : "polska",
+    "places" : [ {
+      "name" : "krakow",
+      "width" : 10.0,
+      "length" : 12.12,
+      "description" : "fajny",
+      "photos" : [ "photo1", "photo2" ],
+      "rating" : 5,
+      "id" : 0,
+      "travelBuddies" : [ 2 ]
+    } ]
+  } ],
+  "friends" : [ 2 ]
+} ]

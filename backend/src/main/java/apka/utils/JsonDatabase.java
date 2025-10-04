@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -35,33 +36,38 @@ public class JsonDatabase {
     public final ObjectMapper mapper = new ObjectMapper();
 
     public void addUser(User user) {
-        database.stream().forEach(u -> {
-            if (u.userId() == user.userId()) {
-                addCountry(u.countries(), user.countries().get(0));
-            }
-            else {
-                database.add(u);
-            }
-        });
+        // find existing user
+        Optional<User> existing = database.stream()
+                .filter(u -> u.userId() == user.userId())
+                .findFirst();
+
+        if (existing.isPresent()) {
+            mergeUser(existing.get(), user);
+        } else {
+            database.add(user);
+        }
+
         saveDatabase(this.database);
         System.out.println(loadDatabase());
     }
 
-    private void addCountry(List<Country> currentCountries, Country country) {
-        System.out.println(country.name());
-        currentCountries.stream().forEach(c -> {
-            if (country.name().equals(c.name())) {
-                addPlace(c.places(), country.places());
-            }
-            else {
-                currentCountries.add(country);
-            }
-        });
+    private void mergeUser(User target, User incoming) {
+        for (Country incCountry : incoming.countries()) {
+            Optional<Country> match = target.countries().stream()
+                    .filter(c -> c.name().equals(incCountry.name()))
+                    .findFirst();
 
+            if (match.isPresent()) {
+                mergePlaces(match.get(), incCountry);
+            } else {
+                // safe to add after iteration finished
+                target.countries().add(incCountry);
+            }
+        }
     }
 
-    private void addPlace(List<Place> currentPlaces, List<Place> place) {
-        currentPlaces.addAll(place);
+    private void mergePlaces(Country targetCountry, Country incomingCountry) {
+        List<Place> targetPlaces = targetCountry.places();
     }
 
 
