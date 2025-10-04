@@ -17,6 +17,7 @@ public class BabbynController {
 
     @GetMapping("/test")
     public String test() {
+        dafa
         service.test();
         return "ok";
     }
