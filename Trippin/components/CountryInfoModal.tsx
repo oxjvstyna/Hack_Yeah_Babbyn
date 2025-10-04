@@ -41,117 +41,117 @@ export default function CountryInfoModal({
       <Pressable style={styles.backdrop} onPress={onClose} />
 
       <View style={styles.sheet}>
-        <ScrollView
+        {/* <ScrollView
           style={{ flexGrow: 0 }}
           contentContainerStyle={{ paddingBottom: 20 }}
           showsVerticalScrollIndicator={false}
+        > */}
+        {/* Header */}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
-          {/* Header */}
+          <Text style={styles.title}>{name ?? ""}</Text>
           <View
             style={{
-              flex: 1,
               flexDirection: "row",
-              justifyContent: "space-between",
               alignItems: "center",
+              columnGap: 16,
             }}
           >
-            <Text style={styles.title}>{name ?? ""}</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                columnGap: 16,
-              }}
-            >
-              <View style={{ position: "relative" }}>
-                <AntDesign name="heart" size={fontSize.xFontSize} color="black" />
-                <Text
-                  style={{
-                    position: "absolute",
-                    top: 8,
-                    left: 6.5,
-                    color: primaryColors.lightText,
-                    fontSize: fontSize.smallFontSize,
-                    fontWeight: "700",
-                  }}
-                >
-                  5.0
-                </Text>
-              </View>
-              <View style={{ position: "relative" }}>
-                <FontAwesome6
-                  name="shield"
-                  size={fontSize.xFontSize}
-                  color="black"
-                />
-                <Text
-                  style={{
-                    position: "absolute",
-                    top: 9,
-                    left: 6.5,
-                    color: primaryColors.lightText,
-                    fontSize: fontSize.smallFontSize,
-                    fontWeight: "700",
-                  }}
-                >
-                  3.2
-                </Text>
-              </View>
+            <View style={{ position: "relative" }}>
+              <AntDesign name="heart" size={fontSize.xFontSize} color="black" />
+              <Text
+                style={{
+                  position: "absolute",
+                  top: 8,
+                  left: 6.5,
+                  color: primaryColors.lightText,
+                  fontSize: fontSize.smallFontSize,
+                  fontWeight: "700",
+                }}
+              >
+                5.0
+              </Text>
+            </View>
+            <View style={{ position: "relative" }}>
+              <FontAwesome6
+                name="shield"
+                size={fontSize.xFontSize}
+                color="black"
+              />
+              <Text
+                style={{
+                  position: "absolute",
+                  top: 9,
+                  left: 6.5,
+                  color: primaryColors.lightText,
+                  fontSize: fontSize.smallFontSize,
+                  fontWeight: "700",
+                }}
+              >
+                3.2
+              </Text>
             </View>
           </View>
+        </View>
 
-          {/* Divider */}
-          <View
-            style={{
-              borderBottomColor: "black",
-              borderBottomWidth: 1,
-              marginVertical: 8,
-            }}
-          />
+        {/* Divider */}
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: 1,
+            marginVertical: 8,
+          }}
+        />
 
-          {/* Tabs */}
-          <View style={styles.tabsContainer}>
-            <TouchableOpacity
-              onPress={() => setSelectedTab("trips")}
-              style={styles.tabItem}
+        {/* Tabs */}
+        <View style={styles.tabsContainer}>
+          <TouchableOpacity
+            onPress={() => setSelectedTab("trips")}
+            style={styles.tabItem}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                selectedTab === "trips" ? styles.tabActive : null,
+              ]}
             >
-              <Text
-                style={[
-                  styles.tabText,
-                  selectedTab === "trips" ? styles.tabActive : null,
-                ]}
-              >
-                My Trips
-              </Text>
-            </TouchableOpacity>
+              My Trips
+            </Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => setSelectedTab("friends")}
-              style={styles.tabItem}
+          <TouchableOpacity
+            onPress={() => setSelectedTab("friends")}
+            style={styles.tabItem}
+          >
+            <Text
+              style={[
+                styles.tabText,
+                selectedTab === "friends" ? styles.tabActive : null,
+              ]}
             >
-              <Text
-                style={[
-                  styles.tabText,
-                  selectedTab === "friends" ? styles.tabActive : null,
-                ]}
-              >
-                Friends
-              </Text>
-            </TouchableOpacity>
-          </View>
+              Friends
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-          {/* Tab Content */}
-          {selectedTab === "friends" ? (
-            <ModalFriendsTab styles={styles} />
-          ) : (
-            <ModalMyTripsTab styles={styles} />
-          )}
+        {/* Tab Content */}
+        {selectedTab === "friends" ? (
+          <ModalFriendsTab styles={styles} />
+        ) : (
+          <ModalMyTripsTab styles={styles} />
+        )}
 
-          {/* Close Button */}
-          <Pressable style={styles.cta} onPress={onClose}>
-            <Text style={styles.ctaText}>Close</Text>
-          </Pressable>
-        </ScrollView>
+        {/* Close Button */}
+        <Pressable style={styles.cta} onPress={onClose}>
+          <Text style={styles.ctaText}>Close</Text>
+        </Pressable>
+        {/* </ScrollView> */}
       </View>
     </Modal>
   );

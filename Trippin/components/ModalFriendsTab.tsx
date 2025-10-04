@@ -1,13 +1,11 @@
 import React from "react";
 import Star from "./Star";
-import {
-    Text
-  } from "react-native";
+import { Text, ScrollView } from "react-native";
 
 export default function ModalFriendsTab({ styles, ...props }) {
-    return (
-        <>
-            <Text>dupa</Text>
-        </>
-    )
+  return (
+    <ScrollView>
+      <Text>dupa</Text>
+    </ScrollView>
+  );
 }

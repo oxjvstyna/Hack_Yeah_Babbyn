@@ -12,7 +12,13 @@ const primaryColors = {
   countryFill: "#362f27",
   countryOutline: "#964B00",
   water: "#a29a93",
+  primary: "#023047",
+  secondary: "#1A7F99",
+  surface: "#FFFBF6",
   lightText: "#fff",
+  surfaceDark: "#001520",
+  textDark: "#001520",
+  gray: "#D9D9D9",
 };
 
 export default primaryColors;
