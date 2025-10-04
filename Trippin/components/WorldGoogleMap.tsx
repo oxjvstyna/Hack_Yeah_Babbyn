@@ -1,9 +1,10 @@
 // components/WorldGoogleMap.tsx
-import React, { useMemo, useState, useCallback } from "react";
-import MapView, { PROVIDER_GOOGLE, Polygon, Region } from "react-native-maps";
+import React, { useMemo, useState, useEffect } from "react";
+import MapView, { PROVIDER_GOOGLE, Polygon } from "react-native-maps";
 import { View, StyleSheet } from "react-native";
 import world from "@/assets/countries.min.json";
 import CountryInfoModal from "@/components/CountryInfoModal";
+import primaryColors from "@/properties/colors";
 
 type Position = [number, number];
 type LinearRing = Position[];
@@ -76,21 +77,8 @@ function toRNPolygons(feature: Feature): RNPolygon[] {
     : geometry.coordinates.map(toOne);
 }
 
-function intersects(region: Region, bbox: RNPolygon["bbox"], pad = 5): boolean {
-  const minLat = region.latitude - region.latitudeDelta / 2 - pad;
-  const maxLat = region.latitude + region.latitudeDelta / 2 + pad;
-  const minLng = region.longitude - region.longitudeDelta / 2 - pad;
-  const maxLng = region.longitude + region.longitudeDelta / 2 + pad;
-  return !(
-    bbox.maxLat < minLat ||
-    bbox.minLat > maxLat ||
-    bbox.maxLng < minLng ||
-    bbox.minLng > maxLng
-  );
-}
-
 const darkStyle = [
-  { elementType: "geometry", stylers: [{ color: "#1b1b1b" }] },
+  { elementType: "geometry", stylers: [{ color: primaryColors.countryFill }] },
   { elementType: "labels.text.fill", stylers: [{ color: "#8b949e" }] },
   { elementType: "labels.text.stroke", stylers: [{ color: "#0f0f10" }] },
   {
@@ -99,25 +87,19 @@ const darkStyle = [
     stylers: [{ visibility: "off" }],
   },
   { featureType: "poi", stylers: [{ visibility: "off" }] },
-  { featureType: "road", stylers: [{ color: "#232323" }] },
-  { featureType: "water", stylers: [{ color: "#0b3d5c" }] },
+  { featureType: "water", stylers: [{ color: primaryColors.water }] },
 ];
 
 export default function WorldGoogleMap() {
+  const [ready, setReady] = useState(false);
   const [selectedIso, setSelectedIso] = useState<string | null>(null);
-  const [region, setRegion] = useState<Region>({
-    latitude: 20,
-    longitude: 0,
-    latitudeDelta: 150,
-    longitudeDelta: 360,
-  });
 
-  // ✅ przelicz raz, trzymaj w pamięci
+  const highlightedCountries = ["POL", "DEU", "ESP", "USA"];
+
   const { polygons, byIso } = useMemo(() => {
     const fc = world as FeatureCollection;
     const polys: RNPolygon[] = [];
-    const index = new Map<string, string>(); // ISO -> NAME
-
+    const index = new Map<string, string>();
     for (const f of fc.features) {
       const iso = f.properties["ISO3166-1-Alpha-3"] ?? "";
       const name = f.properties.name ?? "";
@@ -127,28 +109,46 @@ export default function WorldGoogleMap() {
     return { polygons: polys, byIso: index };
   }, []);
 
-  // ✅ renderuj tylko widoczne polygon
-  const visiblePolys = useMemo(
-    () => polygons.filter((p) => intersects(region, p.bbox, 5)),
-    [polygons, region]
-  );
+  useEffect(() => {
+    setReady(true);
+  }, []);
 
-  const onRegionChangeComplete = useCallback((r: Region) => setRegion(r), []);
+  if (!ready) return <View style={{ flex: 1, backgroundColor: "#0b1220" }} />;
 
   return (
     <View style={{ flex: 1 }}>
       <MapView
         style={StyleSheet.absoluteFillObject}
+        initialRegion={{
+          latitude: 10,
+          longitude: 19,
+          latitudeDelta: 155,
+          longitudeDelta: 45,
+        }}
+        showsCompass={false}
         provider={PROVIDER_GOOGLE}
         customMapStyle={darkStyle}
-        initialRegion={region}
-        onRegionChangeComplete={onRegionChangeComplete} // ✅
-        showsCompass={false}
-        showsUserLocation={false}
         rotateEnabled={false}
+        loadingEnabled
+        loadingIndicatorColor="#0ea5e9"
       >
-        {visiblePolys.map((p, idx) => {
+        {polygons.map((p, idx) => {
           const isSelected = p.iso && p.iso === selectedIso;
+          const isHighlighted = p.iso && highlightedCountries.includes(p.iso); // 💚
+
+          let fillColor = primaryColors.countryFill;
+          let strokeColor = primaryColors.countryOutline;
+
+          if (isHighlighted) {
+            fillColor = "rgba(34,197,94,0.5)";
+            strokeColor = "rgba(22,163,74,1)";
+          }
+
+          if (isSelected) {
+            fillColor = "rgba(239,68,68,0.45)";
+            strokeColor = "rgba(239,68,68,1)";
+          }
+
           return (
             <Polygon
               key={idx}
@@ -156,12 +156,8 @@ export default function WorldGoogleMap() {
               holes={p.holes}
               tappable
               strokeWidth={isSelected ? 2 : 1}
-              strokeColor={
-                isSelected ? "rgba(220,38,38,1)" : "rgba(15,23,42,0.7)"
-              }
-              fillColor={
-                isSelected ? "rgba(220,38,38,1)" : "rgba(14,165,233,0.25)"
-              }
+              strokeColor={strokeColor}
+              fillColor={fillColor}
               onPress={() => setSelectedIso(isSelected ? null : p.iso ?? null)}
             />
           );

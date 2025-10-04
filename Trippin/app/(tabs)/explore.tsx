@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TabTwoScreen() {
   return (
-    <SafeAreaView style={mainStyle.safeArea}>
+    <SafeAreaView edges={["top"]} style={mainStyle.safeArea}>
       <ScrollView style={mainStyle.scrollView}>
         <Text style={generalStyle.basicText}>Inny ekran</Text>
       </ScrollView>
