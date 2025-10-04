@@ -1,5 +1,5 @@
 import primaryColors from "../colors";
-import { fontSize, paddingSize } from "../vars";
+import { fontFamily, fontSize, paddingSize } from "../vars";
 import { StyleSheet } from "react-native";
 
 import { generalStyle } from "./generalStyles";
@@ -11,10 +11,18 @@ export const mainStyle = StyleSheet.create({
     backgroundColor: primaryColors.surface,
   },
   scrollView: {
-    // backgroundColor: primaryColors.darkBlue,
-    // paddingHorizontal: paddingSize.medium,
-    // paddingVertical: paddingSize.mediumBig,
-    // rowGap: paddingSize.mediumBig,
+    paddingVertical: paddingSize.medium,
+    paddingHorizontal: paddingSize.mediumBig,
+    rowGap: paddingSize.mediumBig,
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: primaryColors.primary,
+    color: primaryColors.primary,
+    fontFamily: fontFamily.playball,
+    fontSize: fontSize.xFontSize,
   },
 });
 

@@ -5,10 +5,10 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   Image,
 } from "react-native";
-import Icon from "react-native-vector-icons/Feather";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { mainStyle } from "@/properties/styles/mainStyles";
 
 const posts = [
   {
@@ -47,14 +47,11 @@ export default function FriendActivityScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Friend Activity</Text>
-      </View>
+    <SafeAreaView style={mainStyle.safeArea}>
+      <Text style={mainStyle.header}>Friend Activity</Text>
 
       {/* Content */}
-      <ScrollView contentContainerStyle={styles.scroll}>
+      <ScrollView contentContainerStyle={mainStyle.scrollView}>
         {posts.map((post) => (
           <View key={post.id} style={styles.card}>
             <Text style={styles.daysAgo}>{post.daysAgo}</Text>
@@ -92,20 +89,12 @@ export default function FriendActivityScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F9F8F4" },
-  header: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#001F2D",
-  },
   title: {
     fontSize: 24,
     fontFamily: "Georgia",
     fontStyle: "italic",
     color: "#001F2D",
   },
-  scroll: { padding: 16 },
   card: {
     backgroundColor: "#FFF",
     borderRadius: 8,

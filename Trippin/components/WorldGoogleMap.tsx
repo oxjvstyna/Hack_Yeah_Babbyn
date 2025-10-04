@@ -1,7 +1,7 @@
 // components/WorldGoogleMap.tsx
 import React, { useMemo, useState, useEffect } from "react";
 import MapView, { PROVIDER_GOOGLE, Polygon } from "react-native-maps";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import world from "@/assets/countries.min.json";
 import CountryInfoModal from "@/components/CountryInfoModal";
 import primaryColors from "@/properties/colors";
@@ -140,6 +140,7 @@ export default function WorldGoogleMap() {
         rotateEnabled={false}
         loadingEnabled
         loadingIndicatorColor="#0ea5e9"
+        paddingAdjustmentBehavior={Platform.OS === "ios" ? "never" : undefined}
       >
         {polygons.map((p, idx) => {
           const isSelected = p.iso && p.iso === selectedIso;

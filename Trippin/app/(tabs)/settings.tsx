@@ -16,23 +16,8 @@ export default function TabTwoScreen() {
 
   return (
     <SafeAreaView edges={["top"]} style={mainStyle.safeArea}>
-      <ScrollView
-        style={mainStyle.scrollView}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-          paddingBottom: 60,
-        }}
-      >
-        {/* Header */}
-        <Text
-          style={[
-            generalStyle.headerText,
-            { marginTop: 10, marginBottom: 10, fontSize: 28 },
-          ]}
-        >
-          Settings
-        </Text>
-
+      <Text style={mainStyle.header}>Settings</Text>
+      <ScrollView style={mainStyle.scrollView}>
         <View
           style={{
             height: 1,
