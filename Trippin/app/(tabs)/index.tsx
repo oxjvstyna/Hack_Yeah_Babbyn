@@ -136,6 +136,11 @@ export default function HomeScreen() {
           )}
         </View>
       </ScrollView>
+    <SafeAreaView style={mainStyle.safeArea} edges={["top"]}>
+      {/* <ScrollView style={mainStyle.scrollView}> */}
+
+      <WorldGoogleMap />
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }

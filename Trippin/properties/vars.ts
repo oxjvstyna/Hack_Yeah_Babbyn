@@ -25,6 +25,10 @@ const fontSize = {
   h1FontSize: 50,
 };
 
+const fontFamily = {
+  playball: "Playball_400Regular",
+};
+
 type FontWeight =
   | "normal"
   | "bold"
@@ -38,5 +42,5 @@ type FontWeight =
   | "800"
   | "900";
 
-export { paddingSize, fontSize, borderRadiusSize };
+export { paddingSize, fontSize, borderRadiusSize, fontFamily };
 export type { FontWeight };

@@ -124,6 +124,9 @@ export default function TabTwoScreen() {
             </View>
           </>
         )}
+    <SafeAreaView edges={["top"]} style={mainStyle.safeArea}>
+      <ScrollView style={mainStyle.scrollView}>
+        <Text style={generalStyle.basicText}>Inny ekran</Text>
       </ScrollView>
     </SafeAreaView>
   );
