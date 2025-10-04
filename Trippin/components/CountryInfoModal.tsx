@@ -118,11 +118,7 @@ export default function CountryInfoModal({
           }}
         />
 
-        <Button
-          title="You've been here!"
-          variant={isVisited ? "secondary" : "secondaryOutline"}
-          onPress={() => setIsVisited(true)}
-        ></Button>
+        <Button title={isVisited ? "You've been here!" : "I was here"} variant={isVisited ?  "secondary" : "secondaryOutline"} onPress={() => setIsVisited(true)}></Button>
 
         {/* Tabs */}
         <View style={styles.tabsContainer}>
