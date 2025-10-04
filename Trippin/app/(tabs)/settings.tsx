@@ -1,8 +1,7 @@
-
 import { generalStyle } from "@/properties/styles/generalStyles";
 import { mainStyle } from "@/properties/styles/mainStyles";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, View, Text, TouchableOpacity, Switch } from "react-native";
+import { ScrollView, View, Text, TouchableOpacity, Switch, Image } from "react-native";
 import { useState } from "react";
 
 export default function TabTwoScreen() {
@@ -26,10 +25,11 @@ export default function TabTwoScreen() {
         >
           Settings
         </Text>
+
         <View
           style={{
             height: 1,
-            backgroundColor: "#cdd6d9",
+            backgroundColor: "#fffbf6",
             marginBottom: 20,
           }}
         />
@@ -46,29 +46,68 @@ export default function TabTwoScreen() {
           Account
         </Text>
 
-        <TouchableOpacity
+        <View
           style={{
-            backgroundColor: "#1A7F99",
-            paddingVertical: 15,
-            paddingHorizontal: 20,
-            borderRadius: 15,
-            marginBottom: 10,
-          }}
-        >
-          <Text style={generalStyle.basicText}>Edit Profile</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#1A7F99",
-            paddingVertical: 15,
-            paddingHorizontal: 20,
-            borderRadius: 15,
+            flexDirection: "row",
+            alignItems: "center",
             marginBottom: 30,
           }}
         >
-          <Text style={generalStyle.basicText}>Change Password</Text>
-        </TouchableOpacity>
+          {/* Profile Image */}
+          <Image
+            source={{ uri: "https://i.pravatar.cc/150?img=5" }} // ← tu można podmienić na zdjęcie użytkownika z backendu
+            style={{
+              width: 80,
+              height: 80,
+              borderRadius: 40,
+              borderWidth: 2,
+              borderColor: "#1A7F99",
+              marginRight: 15,
+            }}
+          />
+
+          {/* Buttons (narrowed to the right) */}
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#1A7F99",
+                paddingVertical: 12,
+                borderRadius: 15,
+                marginBottom: 10,
+                alignSelf: "flex-end",
+                width: "80%",
+              }}
+            >
+              <Text
+                style={[
+                  generalStyle.basicText,
+                  { color: "#fff", textAlign: "center" },
+                ]}
+              >
+                Edit Profile
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#1A7F99",
+                paddingVertical: 12,
+                borderRadius: 15,
+                alignSelf: "flex-end",
+                width: "80%",
+              }}
+            >
+              <Text
+                style={[
+                  generalStyle.basicText,
+                  { color: "#fff", textAlign: "center" },
+                ]}
+              >
+                Change Password
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {/* Preferences Section */}
         <Text
@@ -94,7 +133,9 @@ export default function TabTwoScreen() {
             alignItems: "center",
           }}
         >
-          <Text style={generalStyle.basicText}>Notifications</Text>
+          <Text style={[generalStyle.basicText, { color: "#fff" }]}>
+            Notifications
+          </Text>
           <Switch
             value={notifications}
             onValueChange={setNotifications}
@@ -123,7 +164,9 @@ export default function TabTwoScreen() {
             marginBottom: 10,
           }}
         >
-          <Text style={generalStyle.basicText}>Privacy Policy</Text>
+          <Text style={[generalStyle.basicText, { color: "#fff" }]}>
+            Privacy Policy
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -134,8 +177,12 @@ export default function TabTwoScreen() {
             borderRadius: 15,
           }}
         >
-          <Text style={generalStyle.basicText}>Terms of Service</Text>
+            
+          <Text style={[generalStyle.basicText, { color: "#fff" }]}>
+            Terms of Service
+          </Text>
         </TouchableOpacity>
+        
       </ScrollView>
     </SafeAreaView>
   );
