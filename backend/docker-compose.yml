@@ -2,14 +2,14 @@ version: "3.9"
 
 services:
   pg:
-    image: ${IMAGE:-postgres:16}
-    container_name: ${NAME:-pg}
+    image: postgres:16
+    container_name: pg
     ports:
-      - "${HOST_PORT:-5432}:5432"
+      - "5432:5432"
     environment:
-      POSTGRES_USER: ${PG_USER:-postgres}
-      POSTGRES_PASSWORD: ${PG_PASSWORD:-yourpassword}
-      POSTGRES_DB: ${DB_NAME:-travelapp}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: travelapp
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
       interval: 2s
@@ -20,23 +20,20 @@ services:
       - pg_data:/var/lib/postgresql/data
     restart: unless-stopped
 
-  # (opcjonalnie) jednorazowe migracje Flyway
-  # uruchomisz tylko gdy chcesz: `docker compose --profile migrate run --rm flyway migrate`
   flyway:
-    image: ${FLYWAY_IMAGE:-flyway/flyway:10}
+    image: flyway/flyway:10
     depends_on:
       pg:
         condition: service_healthy
-    env_file: .env
     command: [
-      "-url=jdbc:postgresql://pg:5432/${DB_NAME:-travelapp}",
-      "-user=${PG_USER:-postgres}",
-      "-password=${PG_PASSWORD:-yourpassword}",
+      "-url=jdbc:postgresql://pg:5432/travelapp",
+      "-user=postgres",
+      "-password=yourpassword",
       "-locations=filesystem:/flyway/sql",
       "migrate"
     ]
     volumes:
-      - ${MIGRATIONS_DIR:-./backend/src/main/resources/db/migration}:/flyway/sql:ro
+      - ./backend/src/main/resources/db/migration:/flyway/sql:ro
     profiles: ["migrate"]
 
 volumes:
