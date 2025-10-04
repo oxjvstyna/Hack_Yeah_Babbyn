@@ -13,6 +13,8 @@ import Star from "./Star";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import primaryColors from "@/properties/colors";
+import ModalMyTripsTab from "@/components/ModalMyTripsTab"
+import ModalFriendsTab from "@/components/ModalFriendsTab"
 
 type CountryInfoModalProps = {
   visible: boolean;
@@ -54,21 +56,7 @@ export default function CountryInfoModal({
               columnGap: 16,
             }}
           >
-            <View style={{ position: "relative" }}>
-              <AntDesign name="heart" size={fontSize.xFontSize} color="black" />
-              <Text
-                style={{
-                  position: "absolute",
-                  top: 8,
-                  left: 6.5,
-                  color: primaryColors.lightText,
-                  fontSize: fontSize.smallFontSize,
-                  fontWeight: "700",
-                }}
-              >
-                5.0
-              </Text>
-            </View>
+
             <View style={{ position: "relative" }}>
               <FontAwesome6
                 name="shield"
@@ -129,23 +117,9 @@ export default function CountryInfoModal({
         </View>
 
         {selectedTab === "friends" ? (
-          <></>
+          <ModalFriendsTab styles={styles} />
         ) : (
-          <>
-            <Star title="My fun rating" />
-            <Star title="My security rating" />
-            <Text style={styles.sectionTitle}>My Gallery</Text>
-            <View style={styles.galleryGrid}>
-              {[1, 2, 3].map((id) => (
-                <Image
-                  key={id}
-                  source={require("@/assets/images/aa.png")}
-                  style={styles.galleryImage}
-                  resizeMode="cover"
-                />
-              ))}
-            </View>
-          </>
+          <ModalMyTripsTab styles={styles} />
         )}
 
         <Pressable style={styles.cta} onPress={onClose}>
