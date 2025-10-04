@@ -15,6 +15,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import primaryColors from "@/properties/colors";
 import ModalMyTripsTab from "@/components/ModalMyTripsTab";
 import ModalFriendsTab from "@/components/ModalFriendsTab";
+import Button from "./Button";
 
 type CountryInfoModalProps = {
   visible: boolean;
@@ -30,6 +31,7 @@ export default function CountryInfoModal({
   children,
 }: CountryInfoModalProps) {
   const [selectedTab, setSelectedTab] = useState<"trips" | "friends">("trips");
+  const [isVisited, setIsVisited] = useState<boolean>(false);
 
   return (
     <Modal
@@ -108,6 +110,8 @@ export default function CountryInfoModal({
             marginVertical: 8,
           }}
         />
+
+        <Button title="You've been here!" variant={isVisited ?  "secondary" : "secondaryOutline"} onPress={() => setIsVisited(true)}></Button>
 
         {/* Tabs */}
         <View style={styles.tabsContainer}>
