@@ -5,6 +5,7 @@ import { View, StyleSheet } from "react-native";
 import world from "@/assets/countries.min.json";
 import CountryInfoModal from "@/components/CountryInfoModal";
 import primaryColors from "@/properties/colors";
+import { overrides } from "@/properties/mapcolors";
 
 type Position = [number, number];
 type LinearRing = Position[];
@@ -94,7 +95,15 @@ export default function WorldGoogleMap() {
   const [ready, setReady] = useState(false);
   const [selectedIso, setSelectedIso] = useState<string | null>(null);
 
-  const highlightedCountries = ["POL", "DEU", "ESP", "USA"];
+  const highlightedCountries: string[] = [
+    "POL",
+    "DEU",
+    "ESP",
+    "USA",
+    "JPN",
+    "RUS",
+    "NGA",
+  ];
 
   const { polygons, byIso } = useMemo(() => {
     const fc = world as FeatureCollection;
@@ -134,13 +143,14 @@ export default function WorldGoogleMap() {
       >
         {polygons.map((p, idx) => {
           const isSelected = p.iso && p.iso === selectedIso;
-          const isHighlighted = p.iso && highlightedCountries.includes(p.iso); // 💚
+          const isHighlighted = p.iso && highlightedCountries.includes(p.iso);
+          const defaultColor = "rgba(189, 195, 199, 0.5)";
 
           let fillColor = primaryColors.countryFill;
           let strokeColor = primaryColors.countryOutline;
 
           if (isHighlighted) {
-            fillColor = "rgba(34,197,94,0.5)";
+            fillColor = p.iso ? overrides[p.iso] ?? defaultColor : defaultColor;
             strokeColor = "rgba(22,163,74,1)";
           }
 
