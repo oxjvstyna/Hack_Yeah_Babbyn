@@ -1,12 +1,14 @@
 package apka.controller;
 
 import apka.service.BabbynService;
+import model.PlaceSummary;
 import model.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/")
@@ -27,6 +29,14 @@ public class BabbynController {
     @GetMapping("/countries/{userId}")
     public List<String> getCountries(@PathVariable("userId") Integer userId) {
         return service.getCountries(userId);
+    }
+
+    @GetMapping("/places/{userId}")
+    public Map<Integer, List<PlaceSummary>> getUserAndFriendsPlacesByCountry(
+            @PathVariable int userId,
+            @RequestParam(required = false) String country) {
+
+        return service.getUserAndFriendsPlaces(userId, country);
     }
 }
 

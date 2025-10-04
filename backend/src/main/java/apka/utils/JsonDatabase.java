@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import model.Country;
 import model.Place;
 import model.User;
@@ -16,10 +17,7 @@ import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -31,6 +29,7 @@ public class JsonDatabase {
     private final List<User> database;
 
     public JsonDatabase() {
+        mapper.registerModule(new JavaTimeModule());
         database = loadDatabase();
     }
 
@@ -57,6 +56,32 @@ public class JsonDatabase {
                 .findFirst()
                 .map(User::countries)
                 .orElse(Collections.emptyList());
+    }
+
+    public List<Place> getPlacesForUserPerCountry(int userId, String countryName){
+        return getCountriesForUser(userId).stream()
+                .filter(country -> Objects.equals(country.name(), countryName))
+                .findFirst()
+                .map(Country::places)
+                .orElse(Collections.emptyList());
+    }
+
+    public List<Integer> getFriendsForUser(int userId){
+        return database.stream()
+                .filter(user -> user.userId() == userId)
+                .findFirst()
+                .map(User::friends)
+                .orElse(Collections.emptyList());
+    }
+
+    public double getCountryFunRating(List<Integer> userIds, String countryName) {
+        return database.stream()
+                .filter(user -> userIds.contains(user.userId()))
+                .flatMap(user -> user.countries().stream())
+                .filter(c -> c.name().equals(countryName))
+                .mapToDouble(Country::funRating)
+                .average()
+                .orElse(0.0);
     }
 
     private void mergeUser(User target, User incoming) {

@@ -4,6 +4,8 @@ import java.util.List;
 
 public record Country(
         String name,
-        List<Place> places
+        List<Place> places,
+        float securityRating,
+        float funRating
 ) {
 }
