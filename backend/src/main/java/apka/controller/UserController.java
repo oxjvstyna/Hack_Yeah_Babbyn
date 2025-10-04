@@ -1,15 +1,18 @@
 package apka.controller;
 
 
-import apka.db.Country;
+import apka.service.CountryRatingService;
 import apka.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private UserService userService;
+    private CountryRatingService countryRatingService;
 
     @PostMapping("")
     public ResponseEntity<Long> newUser() {
@@ -26,6 +30,11 @@ public class UserController {
     @PostMapping("/{userId}/country")
     public ResponseEntity<String> saveCountry(@PathVariable("userId") String userId, @RequestBody String countryName) {
         return null;
+    }
+
+    @GetMapping("{userId}/countries/")
+    public List<String> getCountries(@PathVariable("userId") Long userId) {
+        return countryRatingService.getCountriesNames(userId);
     }
 
 }
