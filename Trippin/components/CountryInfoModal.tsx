@@ -225,10 +225,8 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    borderBottomWidth: 1,
-    borderColor: "#A1C4D2",
-    marginBottom: 20,
+    justifyContent: "space-between",
+    marginBottom: 10,
   },
   tabItem: {
     paddingVertical: 8,
@@ -239,10 +237,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#1E3D58",
     fontStyle: "italic",
+    textAlign: "center",
+    paddingBottom: 4,
+    width: "100%",
   },
   tabActive: {
     color: "#397C8D",
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderColor: "#397C8D",
   },
   sectionTitle: {
