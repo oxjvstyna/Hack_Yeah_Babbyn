@@ -1,8 +1,9 @@
 // components/WorldGoogleMap.tsx
 import React, { useMemo, useState, useCallback } from "react";
 import MapView, { PROVIDER_GOOGLE, Polygon, Region } from "react-native-maps";
-import { View, Modal, Text, Pressable, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import world from "@/assets/countries.min.json";
+import CountryInfoModal from "@/components/CountryInfoModal";
 
 type Position = [number, number];
 type LinearRing = Position[];
@@ -152,56 +153,11 @@ export default function WorldGoogleMap() {
         })}
       </MapView>
 
-      <Modal
+      <CountryInfoModal
         visible={!!selectedIso}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setSelectedIso(null)}
-      >
-        <Pressable
-          style={styles.backdrop}
-          onPress={() => setSelectedIso(null)}
-        />
-        <View style={styles.sheet}>
-          <Text style={styles.title}>
-            {selectedIso ? byIso.get(selectedIso) ?? selectedIso : ""}
-          </Text>
-          <Text style={styles.text}>Tu wstaw dane o kraju…</Text>
-          <Pressable style={styles.cta} onPress={() => setSelectedIso(null)}>
-            <Text style={styles.ctaText}>Zamknij</Text>
-          </Pressable>
-        </View>
-      </Modal>
+        name={selectedIso ? byIso.get(selectedIso) ?? selectedIso : ""}
+        onClose={() => setSelectedIso(null)}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  backdrop: { flex: 1, backgroundColor: "rgba(0,0,0,0.35)" },
-  sheet: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 16,
-    gap: 8,
-    elevation: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-  },
-  title: { fontSize: 18, fontWeight: "600" },
-  text: { opacity: 0.8 },
-  cta: {
-    alignSelf: "flex-start",
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 12,
-    backgroundColor: "#0ea5e9",
-    marginTop: 8,
-  },
-  ctaText: { color: "white", fontWeight: "600" },
-});
