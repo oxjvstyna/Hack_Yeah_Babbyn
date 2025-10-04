@@ -23,11 +23,8 @@ public class Country {
     @Column()
     private String name;
 
-    @Column()
-    private Float securityRating;
-
-    @Column()
-    private Float funRating;
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CountryRating> ratings;
 
 }
 
