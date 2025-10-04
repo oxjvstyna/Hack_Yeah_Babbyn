@@ -1,7 +1,14 @@
 import { generalStyle } from "@/properties/styles/generalStyles";
 import { mainStyle } from "@/properties/styles/mainStyles";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, View, Text, TouchableOpacity, Switch, Image } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  Switch,
+  Image,
+} from "react-native";
 import { useState } from "react";
 
 export default function TabTwoScreen() {
@@ -177,12 +184,10 @@ export default function TabTwoScreen() {
             borderRadius: 15,
           }}
         >
-            
           <Text style={[generalStyle.basicText, { color: "#fff" }]}>
             Terms of Service
           </Text>
         </TouchableOpacity>
-        
       </ScrollView>
     </SafeAreaView>
   );

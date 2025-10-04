@@ -8,11 +8,10 @@ export const mainStyle = StyleSheet.create({
   safeArea: {
     flex: 1,
     // backgroundColor: primaryColors.lightGrey,
-    backgroundColor: "transparent",
+    backgroundColor: primaryColors.surface,
   },
   scrollView: {
     // backgroundColor: primaryColors.darkBlue,
-    backgroundColor: "transparent",
     // paddingHorizontal: paddingSize.medium,
     // paddingVertical: paddingSize.mediumBig,
     // rowGap: paddingSize.mediumBig,
@@ -48,4 +47,3 @@ export const navbarStyle = StyleSheet.create({
     color: primaryColors.white,
   },
 });
- 

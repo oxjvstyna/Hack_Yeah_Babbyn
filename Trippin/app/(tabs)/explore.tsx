@@ -87,19 +87,6 @@ export default function FriendActivityScreen() {
           <Text style={styles.page}>68</Text>
         </View>
       </ScrollView>
-
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity>
-          <Icon name="map" size={24} color="#001F2D" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name="grid" size={24} color="#001F2D" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name="user" size={24} color="#001F2D" />
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 }
