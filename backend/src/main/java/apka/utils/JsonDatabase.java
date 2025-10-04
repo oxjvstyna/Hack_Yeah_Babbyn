@@ -51,6 +51,14 @@ public class JsonDatabase {
         System.out.println(loadDatabase());
     }
 
+    public void addCountry(Country country, int userId) {
+        database.stream()
+                .filter(user -> user.userId() == userId)
+                .findFirst()
+                .map(user -> user.countries().add(country));
+        saveDatabase(this.database);
+    }
+
     public List<Country> getCountriesForUser(int userId) {
         return database.stream()
                 .filter(user -> user.userId() == userId)

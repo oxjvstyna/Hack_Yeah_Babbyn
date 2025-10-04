@@ -18,17 +18,12 @@ public class BabbynService {
 
     private final JsonDatabase jsonDatabase;
 
-    public void test() {
-        System.out.println("test");
-    }
-
-    public List<Place> findPlaceParameters(int userId, String countryName, Map<String, String> parameters) {
-
-        return null;
-    }
-
     public void saveUsers(List<User> users) {
         jsonDatabase.addUser(users.get(0));
+    }
+
+    public void saveCountry(String country, int userId) {
+        jsonDatabase.addCountry(new Country(country, List.of()), userId);
     }
 
     public List<String> getCountries(int userId) {
