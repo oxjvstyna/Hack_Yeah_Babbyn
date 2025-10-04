@@ -4,6 +4,7 @@ import apka.model.User;
 import apka.service.BabbynService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,7 @@ public class BabbynController {
     }
 
     @PostMapping("place")
-    public String test(User user) {
+    public String test(@RequestBody User user) {
         service.test();
         System.out.println(user.toString());
         return "ok";
