@@ -1,35 +1,22 @@
 package apka.service;
 
-import apka.utils.JsonDatabase;
+import apka.db.User;
+import apka.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import model.Country;
-import model.Place;
-import model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class BabbynService {
 
-    private final JsonDatabase jsonDatabase;
+    @Autowired
+    private UserRepository userRepository;
 
-    public void saveUsers(List<User> users) {
-        jsonDatabase.addUser(users.get(0));
-    }
-
-    public void saveCountry(String country, int userId) {
-        jsonDatabase.addCountry(new Country(country, List.of()), userId);
-    }
-
-    public List<String> getCountries(int userId) {
-        return jsonDatabase.getCountriesForUser(userId)
-                .stream()
-                .map(Country::name)
-                .toList();
+    public Long saveUser(){
+        User saved = userRepository.save(new User());
+        return saved.getId();
     }
 }
