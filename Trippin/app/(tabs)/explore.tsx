@@ -65,12 +65,6 @@ export default function FriendActivityScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontFamily: "Georgia",
-    fontStyle: "italic",
-    color: "#001F2D",
-  },
   card: {
     backgroundColor: primaryColors.surface,
     borderRadius: 8,

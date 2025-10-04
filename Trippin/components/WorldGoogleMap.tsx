@@ -80,8 +80,14 @@ function toRNPolygons(feature: Feature): RNPolygon[] {
 
 const darkStyle = [
   { elementType: "geometry", stylers: [{ color: primaryColors.countryFill }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#8b949e" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#0f0f10" }] },
+  {
+    elementType: "labels.text.fill",
+    stylers: [{ color: primaryColors.surface }],
+  },
+  {
+    elementType: "labels.text.stroke",
+    stylers: [{ color: primaryColors.textDark }],
+  },
   {
     featureType: "administrative",
     elementType: "labels.icon",
