@@ -1,12 +1,14 @@
 package apka.controller;
 
 import apka.service.BabbynService;
-import org.springframework.web.bind.annotation.GetMapping;
+import model.User;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 public class BabbynController {
 
     private final BabbynService service;
@@ -15,8 +17,9 @@ public class BabbynController {
         this.service = service;
     }
 
-    @GetMapping("/test")
-    public String test() {
+    @PostMapping("/place")
+    public String test(@RequestBody User user) {
+        System.out.println(user.toString());
         service.test();
         return "ok";
     }
