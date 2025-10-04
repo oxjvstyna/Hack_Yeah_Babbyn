@@ -1,0 +1,40 @@
+{
+  "user1": {
+    "countries" : [
+      {
+        "polska": [
+          {
+            "name" : "sdfsdfdsf",
+            "width" : "10",
+            "lenght" : "12",
+            "description" : "saidbasi",
+            "photos" : [
+              "photo1",
+              "photo2"
+            ],
+            "rating" : "5",
+            "id" : "0",
+            "travel_buddies" : [
+              "user1",
+              "user2"
+            ]
+          },
+          {
+            "title" : "sdfssdfsdff",
+            "width" : "13",
+            "lenght" : "15"
+          }
+        ],
+        "czechy": [
+        ]
+      }
+    ],
+    "friends" : [
+      "user1",
+      "user2"
+    ]
+  },
+  "user2": {
+  }
+}
+
