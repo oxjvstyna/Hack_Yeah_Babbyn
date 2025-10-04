@@ -36,7 +36,6 @@ public class JsonDatabase {
     public final ObjectMapper mapper = new ObjectMapper();
 
     public void addUser(User user) {
-        // find existing user
         Optional<User> existing = database.stream()
                 .filter(u -> u.userId() == user.userId())
                 .findFirst();
@@ -60,7 +59,6 @@ public class JsonDatabase {
             if (match.isPresent()) {
                 mergePlaces(match.get(), incCountry);
             } else {
-                // safe to add after iteration finished
                 target.countries().add(incCountry);
             }
         }
@@ -68,6 +66,7 @@ public class JsonDatabase {
 
     private void mergePlaces(Country targetCountry, Country incomingCountry) {
         List<Place> targetPlaces = targetCountry.places();
+        targetPlaces.addAll(incomingCountry.places());
     }
 
 
