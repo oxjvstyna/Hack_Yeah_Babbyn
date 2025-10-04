@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from "react-native";
+import React from "react";
+import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mainStyle } from "@/properties/styles/mainStyles";
 import primaryColors from "@/properties/colors";
@@ -16,7 +9,7 @@ const posts = [
   {
     id: 1,
     username: "alex_travels",
-    trip: "Rome, Italy 🇮🇹",
+    trip: "Italy 🇮🇹",
     image: require("@/assets/images/aa.png"),
     caption: "Such a beautiful city full of history!",
     daysAgo: "3 days ago",
@@ -24,7 +17,7 @@ const posts = [
   {
     id: 2,
     username: "marta.world",
-    trip: "Tokyo, Japan 🇯🇵",
+    trip: "Japan 🇯🇵",
     image: require("@/assets/images/aa.png"),
     caption: "Cherry blossoms were absolutely stunning 🌸",
     daysAgo: "5 days ago",
@@ -32,7 +25,7 @@ const posts = [
   {
     id: 3,
     username: "johnny_explorer",
-    trip: "Reykjavik, Iceland 🇮🇸",
+    trip: "Iceland 🇮🇸",
     image: require("@/assets/images/aa.png"),
     caption: "Hot springs and northern lights ❄️🔥",
     daysAgo: "1 week ago",
@@ -40,19 +33,9 @@ const posts = [
 ];
 
 export default function FriendActivityScreen() {
-  const [likedPosts, setLikedPosts] = useState<number[]>([]);
-
-  const toggleLike = (id: number) => {
-    setLikedPosts((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
-    );
-  };
-
   return (
     <SafeAreaView style={mainStyle.safeArea}>
       <Text style={mainStyle.header}>Friend Activity</Text>
-
-      {/* Content */}
       <ScrollView contentContainerStyle={mainStyle.scrollView}>
         {posts.map((post) => (
           <View key={post.id} style={styles.card}>
@@ -66,25 +49,16 @@ export default function FriendActivityScreen() {
             </View>
 
             <Image source={post.image} style={styles.postImage} />
-
-            <TouchableOpacity onPress={() => toggleLike(post.id)}>
-              <Text style={styles.likeButton}>
-                {likedPosts.includes(post.id) ? "❤️" : "🤍"}
-              </Text>
-            </TouchableOpacity>
+            <View style={styles.pagination}>
+              <Text style={[styles.page, styles.activePage]}>1</Text>
+              <Text style={styles.page}>1</Text>
+              <Text style={styles.page}>...</Text>
+              <Text style={styles.page}>5</Text>
+            </View>
 
             <Text style={styles.caption}>{post.caption}</Text>
           </View>
         ))}
-
-        {/* Pagination */}
-        <View style={styles.pagination}>
-          <Text style={[styles.page, styles.activePage]}>1</Text>
-          <Text style={styles.page}>2</Text>
-          <Text style={styles.page}>...</Text>
-          <Text style={styles.page}>67</Text>
-          <Text style={styles.page}>68</Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
