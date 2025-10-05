@@ -59,10 +59,11 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
    ```
 
 ## 📱 Install dependencies 
-1. Install *expo go* app on your phone
+1. Ensure you have node and npm installed on your computer
+2. Install *expo go* app on your phone
 > [!TIP]
 > IOS system prefered on the mobile device.
-2. Navigate to the Trippin folder and run:
+3. Navigate to the Trippin folder and run:
 
    ```bash
    npm install
@@ -73,8 +74,8 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
    ```bash
    npx expo start --tunnel
    ```
-3. In Trippin/hooks/api.ts - BASE_URL has to be the same as the one under the generated QR code ("Metro waiting on..."). Keep the port 8080!!!
-4. Navigate to the expo go app on your mobile device and scan generated QR code.
+4. In Trippin/hooks/api.ts - BASE_URL has to be the same as the one under the generated QR code ("Metro waiting on..."). Keep the port 8080!!!
+5. Navigate to the expo go app on your mobile device and scan generated QR code.
 > [!IMPORTANT]
 > Keep in mind that you have to be in the same network (mobile device and your laptop) to run the application.
 
