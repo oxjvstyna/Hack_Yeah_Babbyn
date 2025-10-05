@@ -1,8 +1,9 @@
 package apka.responses;
 
 import java.util.Date;
+import java.util.List;
 
 public record PlaceSummary(String name,
-                           String photo,
+                           List<String> photo,
                            Long id,
                            Date date){}

@@ -1,6 +1,7 @@
 package apka.service;
 
 import apka.db.Place;
+import apka.db.PlacePhoto;
 import apka.db.User;
 import apka.repository.PlaceRepository;
 import apka.responses.PlaceSummary;
@@ -33,9 +34,14 @@ public class PlacesService {
     }
 
     private PlaceSummary mapToPlaceSummary(Place place) {
-        String photo = (place.getPhotos() != null && !place.getPhotos().isEmpty())
-                ? place.getPhotos().get(0).getPhotoString()
-                : null;
-        return new PlaceSummary(place.getName(), photo, place.getId(), place.getDate());
+        List<String> photos = null;
+
+        if (place.getPhotos() != null && !place.getPhotos().isEmpty()) {
+            photos = place.getPhotos().stream()
+                    .map(PlacePhoto::getPhotoString)
+                    .collect(Collectors.toList());
+        }
+
+        return new PlaceSummary(place.getName(), photos, place.getId(), place.getDate());
     }
 }
