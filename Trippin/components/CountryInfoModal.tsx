@@ -1,4 +1,4 @@
-import { fontFamily, fontSize, paddingSize } from "@/properties/vars";
+import { fontFamily, fontSize } from "@/properties/vars";
 import React, { useState } from "react";
 import {
   Modal,
@@ -7,7 +7,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -41,7 +40,7 @@ export default function CountryInfoModal({
   const [starFun, setStarFun] = useState<number>(0);
   const [starSec, setStarSec] = useState<number>(0);
   const [ratingsLoaded, setRatingsLoaded] = useState(false);
-  const [places, setPlaces] = useState<Place[]>([]);
+  const [placesByUser, setPlacesByUser] = useState<Record<string, Place[]>>({});
 
   React.useEffect(() => {
     console.log("hehe");
@@ -59,14 +58,14 @@ export default function CountryInfoModal({
             if (alive) {
               setStarFun(v.funRating ? v.funRating : 0);
               setStarSec(v.securityRating ? v.securityRating : 0);
-              setPlaces(Array.isArray(v.places) ? v.places : []);
+              setPlacesByUser(v.placesPerUser ?? {});
               setRatingsLoaded(true);
               console.log("bbb");
             }
           } else {
             setStarFun(0);
             setStarSec(0);
-            setPlaces([]);
+            setPlacesByUser({});
             setRatingsLoaded(true);
           }
         } catch (e) {
@@ -203,7 +202,11 @@ export default function CountryInfoModal({
 
         {/* Tab Content */}
         {selectedTab === "friends" ? (
-          <ModalFriendsTab styles={styles} />
+          <ModalFriendsTab
+            styles={styles}
+            placesByUser={placesByUser}
+            currentUserId={1}
+          />
         ) : ratingsLoaded ? (
           <ModalMyTripsTab
             key={`mytrips-${iso}-${starFun}-${starSec}`}
@@ -211,7 +214,7 @@ export default function CountryInfoModal({
             iso={iso}
             ratingFun={starFun}
             ratingSec={starSec}
-            places={places}
+            places={placesByUser?.["1"] ?? []}
           />
         ) : (
           <Text style={{ color: "#666" }}>Loading ratings…</Text>

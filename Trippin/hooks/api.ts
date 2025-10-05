@@ -229,12 +229,9 @@ export async function secRating(
 }
 
 export async function getUserPlacesByCountry(
-  iso: string,
-  userId = 1
-): Promise<CountryPlacesResponse> {
-  if (!/^[A-Z]{3}$/.test(iso)) {
-    throw new Error("Invalid ISO code (expected ISO 3166-1 alpha-3).");
-  }
+  iso: string
+): Promise<PlacesServerResponse> {
+  if (!/^[A-Z]{3}$/.test(iso)) throw new Error("Invalid ISO code.");
 
   const url = new URL(`${BASE_URL}/user/places/${userId}`);
   url.searchParams.set("countryIso", iso);
@@ -248,41 +245,29 @@ export async function getUserPlacesByCountry(
     const msg = await r.text().catch(() => "");
     throw new Error(`HTTP ${r.status}${msg ? ` – ${msg}` : ""}`);
   }
-  if (r.status === 204)
-    return { securityRating: null, funRating: null, places: [] };
-
-  const data: unknown = await r.json();
-
-  const isPlace = (x: any): x is Place =>
-    x &&
-    typeof x === "object" &&
-    typeof x.name === "string" &&
-    typeof x.photo === "string" &&
-    (x.id === undefined || typeof x.id === "number") &&
-    (x.date === undefined || typeof x.date === "string");
-
-  if (!data || typeof data !== "object") throw new Error("Invalid payload.");
-  const d = data as Partial<PlacesServerResponse>;
-  const map = d.placesPerUser;
-
-  if (
-    (d.securityRating !== null && typeof d.securityRating !== "number") ||
-    (d.funRating !== null && typeof d.funRating !== "number") ||
-    !map ||
-    typeof map !== "object"
-  ) {
-    throw new Error("Invalid payload shape.");
+  if (r.status === 204) {
+    return { securityRating: null, funRating: null, placesPerUser: {} };
   }
 
-  let places: Place[] = [];
-  const all = Object.values(map).flatMap((v) =>
-    Array.isArray(v) ? v : []
-  ) as unknown[];
-  places = all.filter(isPlace) as Place[];
+  const data = (await r.json()) as Partial<PlacesServerResponse>;
+  // Lekka walidacja runtime:
+  if (
+    !data ||
+    typeof data !== "object" ||
+    typeof data.placesPerUser !== "object"
+  )
+    throw new Error("Invalid payload shape (placesPerUser).");
+
+  const map: Record<string, Place[]> = {};
+  for (const [k, v] of Object.entries(data.placesPerUser!)) {
+    map[k] = Array.isArray(v)
+      ? v.filter((p) => p && typeof p.photo === "string")
+      : [];
+  }
 
   return {
-    securityRating: d.securityRating ?? null,
-    funRating: d.funRating ?? null,
-    places,
+    securityRating: data.securityRating ?? null,
+    funRating: data.funRating ?? null,
+    placesPerUser: map,
   };
 }
