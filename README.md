@@ -43,13 +43,14 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
 1. Ensure **Docker Desktop** or **Docker Daemon** is running.
 2. Ensure you're using Intelij Idea from Application.class
 (In intelij open just the backend folder)
-3. Navigate to the backend folder:
+3. In the backend folder run:
    ```bash
-   cd backend
    docker-compose up
    ```
 4. CLick on the green button next to the Application.calss to start the application
-5. In case you need to restart:
+5. In case you encounter some error with connection (password issues) change the ports for the database in the aplication.yml (localhost:5432 to localhost:55432) and docker-compose
+      - "5432:5432" -> "55432:5432"
+6. For every application restart, restart also the database:
 
    ```bash
    docker-compose down -v
