@@ -18,38 +18,32 @@ public class CountryService {
     private final CountryRepository countryRepository;
 
     @Transactional
-    public Country addOrRetrieveCountry(String countryName) {
+    public Country addOrRetrieveCountry(String countryIso) {
 
-        Optional<Country> existing = countryRepository.findByName(countryName);
+        Optional<Country> existing = countryRepository.findByIso3(countryIso);
         if (existing.isPresent()) {
             return existing.get();
         }
 
         Country country = new Country();
-        country.setName(countryName);
-        country.setIso3(nameToIso3(countryName));
+        country.setName(iso3ToName(countryIso));
+        country.setIso3(countryIso);
         return countryRepository.save(country);
     }
 
 
-    private Country addNewCountry(String countryName) {
-        String iso3 = nameToIso3(countryName);
+    private Country addNewCountry(String countryIso) {
         return countryRepository
                 .save(Country.builder()
-                        .name(countryName)
-                        .iso3(iso3)
-                        .name(countryName)
+                        .name(iso3ToName(countryIso))
+                        .iso3(countryIso)
                         .build());
     }
 
-    public static String nameToIso3(String name) {
-        if (name == null) return null;
-        for (CountryCode c : CountryCode.values()) {
-            if (c.getName().equalsIgnoreCase(name.trim())) {
-                return c.getAlpha3();
-            }
-        }
-        return null;
+    public static String iso3ToName(String iso3) {
+        if (iso3 == null) return null;
+        CountryCode code = CountryCode.getByCode(iso3.trim().toUpperCase());
+        return code != null ? code.getName() : null;
     }
 
     public Long getCountryIdByIso3(String iso3) {

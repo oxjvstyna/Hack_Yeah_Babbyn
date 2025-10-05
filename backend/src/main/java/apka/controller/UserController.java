@@ -3,8 +3,10 @@ package apka.controller;
 
 import apka.controller.request.PlaceRequest;
 import apka.db.User;
+import apka.responses.CountryRatingResponse;
 import apka.responses.CountrySummary;
 import apka.responses.PlaceSummary;
+import apka.responses.UserResponse;
 import apka.service.CountryRatingService;
 import apka.service.CountryService;
 import apka.service.PlacesService;
@@ -47,13 +49,23 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/country")
-    public ResponseEntity<User> saveCountry(@PathVariable("userId") Long userId, @RequestParam String countryName) {
-        return ResponseEntity.ok(userService.addUserCountry(userId, countryName));
+    public ResponseEntity<UserResponse> saveCountry(@PathVariable("userId") Long userId, @RequestParam String countryIso) {
+        return ResponseEntity.ok(toDto(userService.addUserCountry(userId, countryIso)));
+    }
+
+    @PostMapping("/{userId}/funRating")
+    public ResponseEntity<UserResponse> addFunRating(@PathVariable("userId") Long userId, @RequestParam String countryIso, @RequestParam Float rating) {
+        return ResponseEntity.ok(toDto(userService.addFunRating(userId, countryIso, rating)));
+    }
+
+    @PostMapping("/{userId}/secRating")
+    public ResponseEntity<UserResponse> addSecRating(@PathVariable("userId") Long userId, @RequestParam String countryIso, @RequestParam Float rating) {
+        return ResponseEntity.ok(toDto(userService.addSecRating(userId, countryIso,  rating)));
     }
 
     @PostMapping("/{userId}/place")
-    public ResponseEntity<User> savePlace(@PathVariable("userId") Long userId, @RequestBody PlaceRequest placeRequest) {
-        return ResponseEntity.ok(userService.addUserPlace(userId, placeRequest));
+    public ResponseEntity<UserResponse> savePlace(@PathVariable("userId") Long userId, @RequestBody PlaceRequest placeRequest) {
+        return ResponseEntity.ok(toDto(userService.addUserPlace(userId, placeRequest)));
     }
 
     @GetMapping("/{userId}/countries/")
@@ -68,6 +80,7 @@ public class UserController {
 
         List<Long> usersIds = userService.getUserAndFriendsIds(userId);
         Long countryId = countryService.getCountryIdByIso3(countryIso);
+        System.out.println("countryId: " + countryId);
 
         Map<Long, List<PlaceSummary>> placeSummariesPerUser = placesService.mapUsersToPlaceSummaries(usersIds, countryId);
 
@@ -78,8 +91,16 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/friend/{friendId}")
-    public ResponseEntity<User> addFriend(@PathVariable("userId") Long userId, @PathVariable("friendId") Long friendId) {
-        return ResponseEntity.ok(userService.addFriend(userId, friendId));
+    public ResponseEntity<UserResponse> addFriend(@PathVariable("userId") Long userId, @PathVariable("friendId") Long friendId) {
+        return ResponseEntity.ok(toDto(userService.addFriend(userId, friendId)));
+    }
+
+    private UserResponse toDto(User u) {
+        List<Long> friendIds = u.getFriends().stream().map(User::getId).toList();
+        List<CountryRatingResponse> ratings = u.getCountryRatings().stream()
+                .map(r -> new CountryRatingResponse(r.getId(), r.getFunRating(), r.getSecurityRating()))
+                .toList();
+        return new UserResponse(u.getId(), u.getPlaceIds(), friendIds, ratings);
     }
 
 }

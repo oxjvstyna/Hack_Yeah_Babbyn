@@ -19,7 +19,7 @@ public class PlaceService {
 
     @Transactional
     public Place addPlace(PlaceRequest req) {
-        Country country = countryService.addOrRetrieveCountry(req.getCountryName());
+        Country country = countryService.addOrRetrieveCountry(req.getCountryIso());
 
         Place place = Place.builder()
                 .name(req.getName())

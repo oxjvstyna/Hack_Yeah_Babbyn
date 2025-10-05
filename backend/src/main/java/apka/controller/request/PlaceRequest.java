@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class PlaceRequest {
 
-    private String countryName;
+    private String countryIso;
     private String name;
     private BigDecimal width;
     private BigDecimal length;

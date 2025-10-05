@@ -9,6 +9,7 @@ import apka.repository.CountryRepository;
 import apka.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,7 +23,6 @@ public class CountryRatingService {
 
     @Autowired
     private CountryRatingRepository countryRatingRepository;
-    private final CountryRatingRepository countryRatingRepository;
     private UserRepository userRepository;
     private CountryRepository countryRepository;
 
@@ -66,7 +66,10 @@ public class CountryRatingService {
         Double rating = countryRatingRepository.findAverageSecurityRatingByCountryAndUserIds(countryId, userIds);
         return roundToOneDecimal(rating);
     }
-    private double roundToOneDecimal(double rating) {
+    private double roundToOneDecimal(Double rating) {
+        if (rating == null) {
+            return 0.0;
+        }
         return BigDecimal.valueOf(rating)
                 .setScale(1, RoundingMode.HALF_UP)
                 .doubleValue();

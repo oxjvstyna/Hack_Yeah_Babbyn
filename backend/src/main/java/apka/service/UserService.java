@@ -20,7 +20,7 @@ import java.util.*;
 public class UserService {
 
     @Autowired
-    private finalUserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
     private CountryRepository countryRepository;
     @Autowired
@@ -46,8 +46,8 @@ public class UserService {
     }
 
     @Transactional
-    public User addUserCountry(Long userId, String countryName) {
-        Country country = countryService.addOrRetrieveCountry(countryName);
+    public User addUserCountry(Long userId, String countryIso) {
+        Country country = countryService.addOrRetrieveCountry(countryIso);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("user not found"));
         CountryRating countryRating = countryRatingService.addOrRetrieveCountryRating(user, country);
@@ -56,11 +56,31 @@ public class UserService {
     }
 
     @Transactional
+    public User addFunRating(Long userId, String countryIso, Float rating) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("user not found"));
+        Country country = countryService.addOrRetrieveCountry(countryIso);
+        CountryRating countryRating = countryRatingService.addOrRetrieveCountryRating(user, country);
+        countryRating.setFunRating(rating);
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public User addSecRating(Long userId, String countryIso, Float rating) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("user not found"));
+        Country country = countryService.addOrRetrieveCountry(countryIso);
+        CountryRating countryRating = countryRatingService.addOrRetrieveCountryRating(user, country);
+        countryRating.setSecurityRating(rating);
+        return userRepository.save(user);
+    }
+
+    @Transactional
     public User addUserPlace(Long userId, PlaceRequest placeRequest) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("user not found"));
 
-        Country country = countryService.addOrRetrieveCountry(placeRequest.getCountryName());
+        Country country = countryService.addOrRetrieveCountry(placeRequest.getCountryIso());
         countryRatingService.addOrRetrieveCountryRating(user, country);
         System.out.println("here");
         Place place = placeService.addPlace(placeRequest);
@@ -68,7 +88,6 @@ public class UserService {
         user.getPlaceIds().add(place.getId());
         return userRepository.save(user);
     }
-}
 
     public List<Long> getUserAndFriendsIds(Long userId) {
         User user = userRepository.findById(userId)
@@ -82,9 +101,6 @@ public class UserService {
                 .map(User::getId)
                 .toList();
     }
-
-
-
 
 }
 
