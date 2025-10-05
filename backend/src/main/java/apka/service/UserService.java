@@ -56,6 +56,16 @@ public class UserService {
     }
 
     @Transactional
+    public User deleteUserCountry(Long userId, String countryIso) {
+        Country country = countryService.addOrRetrieveCountry(countryIso);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("user not found"));
+        CountryRating countryRating = countryRatingService.addOrRetrieveCountryRating(user, country);
+        user.removeCountryRating(countryRating);
+        return userRepository.save(user);
+    }
+
+    @Transactional
     public User addFunRating(Long userId, String countryIso, Float rating) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("user not found"));
