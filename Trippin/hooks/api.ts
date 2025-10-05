@@ -26,10 +26,11 @@ export type Place = {
 export type PlacesServerResponse = {
   securityRating: number | null;
   funRating: number | null;
-  placesPerUser: Record<string, Place[]>; // <-- klucz: userId jako string
+  placesPerUser: Record<string, Place[]>;
+  names: Record<string, string>;
+  photos: Record<string, string>;
 };
 
-// to zwrócimy do UI (już spłaszczone)
 export type CountryPlacesResponse = {
   securityRating: number | null;
   funRating: number | null;
@@ -246,11 +247,16 @@ export async function getUserPlacesByCountry(
     throw new Error(`HTTP ${r.status}${msg ? ` – ${msg}` : ""}`);
   }
   if (r.status === 204) {
-    return { securityRating: null, funRating: null, placesPerUser: {} };
+    return {
+      securityRating: null,
+      funRating: null,
+      placesPerUser: {},
+      names: {},
+      photos: {},
+    };
   }
 
   const data = (await r.json()) as Partial<PlacesServerResponse>;
-  // Lekka walidacja runtime:
   if (
     !data ||
     typeof data !== "object" ||
@@ -269,5 +275,7 @@ export async function getUserPlacesByCountry(
     securityRating: data.securityRating ?? null,
     funRating: data.funRating ?? null,
     placesPerUser: map,
+    names: data.names ?? {},
+    photos: data.photos ?? {},
   };
 }

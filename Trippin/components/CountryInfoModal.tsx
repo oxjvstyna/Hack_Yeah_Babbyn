@@ -41,6 +41,8 @@ export default function CountryInfoModal({
   const [starSec, setStarSec] = useState<number>(0);
   const [ratingsLoaded, setRatingsLoaded] = useState(false);
   const [placesByUser, setPlacesByUser] = useState<Record<string, Place[]>>({});
+  const [names, setNames] = useState<Record<string, string>>({});
+  const [photos, setPhotos] = useState<Record<string, string>>({});
 
   React.useEffect(() => {
     console.log("hehe");
@@ -59,6 +61,8 @@ export default function CountryInfoModal({
               setStarFun(v.funRating ? v.funRating : 0);
               setStarSec(v.securityRating ? v.securityRating : 0);
               setPlacesByUser(v.placesPerUser ?? {});
+              setNames(v.names ?? {});
+              setPhotos(v.photos ?? {});
               setRatingsLoaded(true);
               console.log("bbb");
             }
@@ -66,6 +70,8 @@ export default function CountryInfoModal({
             setStarFun(0);
             setStarSec(0);
             setPlacesByUser({});
+            setNames({});
+            setPhotos({});
             setRatingsLoaded(true);
           }
         } catch (e) {
@@ -205,6 +211,8 @@ export default function CountryInfoModal({
           <ModalFriendsTab
             styles={styles}
             placesByUser={placesByUser}
+            names={names}
+            userPhotos={photos}
             currentUserId={1}
           />
         ) : ratingsLoaded ? (
@@ -343,9 +351,9 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   friendImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 40,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
   },
   galleryGrid: {
     flexDirection: "row",
