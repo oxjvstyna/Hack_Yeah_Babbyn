@@ -20,7 +20,7 @@ export type Place = {
   id?: number;
   date?: string;
   name: string;
-  photo: string; // base64 (bez/ze wstępem data:)
+  photo: string[]; // base64 (bez/ze wstępem data:)
 };
 
 export type PlacesServerResponse = {
@@ -230,9 +230,10 @@ export async function secRating(
 }
 
 export async function getUserPlacesByCountry(
-  iso: string
+  iso: string,
+  userId = 1
 ): Promise<PlacesServerResponse> {
-  if (!/^[A-Z]{3}$/.test(iso))
+  if (!/^[A-Z]{3}$/.test(iso)) {
     return {
       securityRating: null,
       funRating: null,
@@ -240,6 +241,7 @@ export async function getUserPlacesByCountry(
       names: {},
       photos: {},
     };
+  }
 
   const url = new URL(`${BASE_URL}/user/places/${userId}`);
   url.searchParams.set("countryIso", iso);
@@ -263,26 +265,64 @@ export async function getUserPlacesByCountry(
     };
   }
 
-  const data = (await r.json()) as Partial<PlacesServerResponse>;
-  if (
-    !data ||
-    typeof data !== "object" ||
-    typeof data.placesPerUser !== "object"
-  )
-    throw new Error("Invalid payload shape (placesPerUser).");
+  const data: unknown = await r.json();
+  if (!data || typeof data !== "object")
+    throw new Error("Invalid payload: expected object.");
+  const d = data as Partial<PlacesServerResponse>;
 
-  const map: Record<string, Place[]> = {};
-  for (const [k, v] of Object.entries(data.placesPerUser!)) {
-    map[k] = Array.isArray(v)
-      ? v.filter((p) => p && typeof p.photo === "string")
-      : [];
+  const isStringArray = (x: unknown): x is string[] =>
+    Array.isArray(x) && x.every((s) => typeof s === "string");
+  const isPlace = (x: any): x is Place =>
+    x &&
+    typeof x === "object" &&
+    typeof x.name === "string" &&
+    isStringArray(x.photo) &&
+    (x.id === undefined || typeof x.id === "number") &&
+    (x.date === undefined || typeof x.date === "string");
+
+  const isStringRecord = (x: unknown): x is Record<string, string> =>
+    !!x &&
+    typeof x === "object" &&
+    Object.values(x as Record<string, unknown>).every(
+      (v) => typeof v === "string"
+    );
+
+  const securityRating =
+    d.securityRating === null || typeof d.securityRating === "number"
+      ? d.securityRating ?? null
+      : null;
+  const funRating =
+    d.funRating === null || typeof d.funRating === "number"
+      ? d.funRating ?? null
+      : null;
+
+  if (!d.placesPerUser || typeof d.placesPerUser !== "object") {
+    throw new Error("Invalid payload shape (placesPerUser).");
   }
 
-  return {
-    securityRating: data.securityRating ?? null,
-    funRating: data.funRating ?? null,
-    placesPerUser: map,
-    names: data.names ?? {},
-    photos: data.photos ?? {},
-  };
+  // sanitize placesPerUser
+  const placesPerUser: Record<string, Place[]> = {};
+  for (const [uid, arr] of Object.entries(d.placesPerUser)) {
+    placesPerUser[uid] = (Array.isArray(arr) ? arr : [])
+      .filter(isPlace)
+      .map((p) => ({ ...p, photo: p.photo.filter(Boolean) }));
+  }
+
+  const names = isStringRecord(d.names) ? d.names : {};
+
+  // photos: expect single string per user
+  const photos: Record<string, string> = isStringRecord(d.photos)
+    ? d.photos
+    : {};
+
+  // (Optional) fill missing photos from the first non-empty base64 in placesPerUser
+  for (const [uid, places] of Object.entries(placesPerUser)) {
+    if (photos[uid]) continue;
+    const first = places
+      .flatMap((p) => p.photo)
+      .find((s) => !!s && s.trim().length > 0);
+    if (first) photos[uid] = first.trim();
+  }
+
+  return { securityRating, funRating, placesPerUser, names, photos };
 }

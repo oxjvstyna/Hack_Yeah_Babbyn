@@ -104,16 +104,24 @@ export default function ModalMyTripsTab({ styles, places, ...props }: Props) {
             resizeMode="cover"
           />
         ))}
-        {places.map((p) => (
-          <Image
-            key={`place-${p.id}`}
-            source={{ uri: toDataUri(p.photo) }}
-            style={styles.galleryImage}
-            resizeMode="cover"
-            accessible
-            accessibilityLabel={p.name || `Photo ${p.id}`}
-          />
-        ))}
+        {places.flatMap((p, i) =>
+          (p.photo ?? []).map((b64, j) => {
+            if (!b64) return null;
+            const uri = toDataUri(b64); // patrz helper niżej
+            return (
+              <Image
+                key={`place-${p.id ?? i}-img-${j}`}
+                source={{ uri }}
+                style={styles.galleryImage}
+                resizeMode="cover"
+                accessible
+                accessibilityLabel={
+                  p.name ? `${p.name} ${j + 1}` : `Photo ${p.id ?? i}-${j + 1}`
+                }
+              />
+            );
+          })
+        )}
       </View>
     </ScrollView>
   );
