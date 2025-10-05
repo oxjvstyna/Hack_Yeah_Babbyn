@@ -1,5 +1,6 @@
 package apka.db;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,13 +24,13 @@ public class CountryRating {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_country_ratings_user"))
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference("user-countryRatings")
     private User user;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", nullable = false,
-            foreignKey = @ForeignKey(name = "fk_country_ratings_country"))
+    @JoinColumn(name = "country_id", nullable = false)
+    @JsonBackReference("country-ratings")
     private Country country;
 
     @Column(name = "fun_rating")
@@ -38,4 +39,5 @@ public class CountryRating {
     @Column(name = "security_rating")
     private Float securityRating;
 }
+
 

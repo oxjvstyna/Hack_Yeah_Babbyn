@@ -7,8 +7,9 @@ import apka.db.User;
 import apka.repository.CountryRatingRepository;
 import apka.repository.CountryRepository;
 import apka.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,24 +20,26 @@ import java.util.List;
 public class CountryRatingService {
 
     private final CountryRatingRepository countryRatingRepository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private CountryRepository countryRepository;
-    @Autowired
-    private CountryRatingRepository countryRatingRepository;
 
-    public CountryRating addNewCountryRating(User user, Country country) {
-        return countryRatingRepository.save(CountryRating.builder()
-                        .user(user)
-                        .country(country)
-                .build());
+    @Transactional
+    public CountryRating addOrRetrieveCountryRating(User user, Country country) {
+        return countryRatingRepository
+                .findByUser_IdAndCountry_Id(user.getId(), country.getId())
+                .orElseGet(() -> {
+                    CountryRating rating = new CountryRating();
+                    rating.setUser(user);
+                    rating.setCountry(country);
+                    rating.setFunRating(null);
+                    rating.setSecurityRating(null);
+                    return countryRatingRepository.save(rating);
+                });
     }
 
+    @Transactional
     public CountryRating addCountryRating(User user, Country country, Float funRating, Float securityRating) {
-        Optional<CountryRating> existingCountryRating = countryRatingRepository.findByCountryIdAndUserId(country.getId(), user.getId());
-        CountryRating rating;
-        rating = existingCountryRating.orElseGet(() -> addNewCountryRating(user, country));
+        CountryRating rating = addOrRetrieveCountryRating(user, country);
         rating.setFunRating(funRating);
         rating.setSecurityRating(securityRating);
         return countryRatingRepository.save(rating);
@@ -46,8 +49,19 @@ public class CountryRatingService {
         return countryRatingRepository.findByUserId(userId)
                 .stream()
                 .map(CountryRating::getCountry)
+                .map(r -> {
+                    System.out.print(r.getIso3());
+                    return r;
+                })
                 .map(Country::getIso3)
                 .toList();
+    }
+
+    private CountryRating addNewCountryRating(User user, Country country) {
+        return countryRatingRepository.save(CountryRating.builder()
+                .user(user)
+                .country(country)
+                .build());
     }
 
 }

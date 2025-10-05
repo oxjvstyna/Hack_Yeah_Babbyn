@@ -53,7 +53,8 @@ CREATE INDEX idx_country_ratings_user    ON country_ratings(user_id);
 CREATE TABLE user_places (
                              user_id  BIGINT REFERENCES users(id)   ON DELETE CASCADE,
                              place_id BIGINT REFERENCES places(id)  ON DELETE CASCADE,
-                             PRIMARY KEY (user_id, place_id)
+                             PRIMARY KEY (user_id, place_id),
+                             CONSTRAINT uk_user_places UNIQUE (user_id, place_id)
 );
 CREATE INDEX idx_user_places_place ON user_places(place_id);
 

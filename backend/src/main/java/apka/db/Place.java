@@ -17,7 +17,10 @@ import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -27,10 +30,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Builder
 @Entity
 @Table(name = "places")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,4 +75,21 @@ public class Place {
     @Column()
     @Temporal(TemporalType.DATE)
     private Date date;
+
+    public void addPhoto(String url) {
+        if (this.photos == null) {
+            this.photos = new ArrayList<>();
+        }
+        PlacePhoto ph = PlacePhoto.builder()
+                .place(this)
+                .photoString(url)
+                .position(this.photos.size())
+                .build();
+        this.photos.add(ph);
+    }
+
+    public void addPhotoEntity(PlacePhoto photo) {
+        photo.setPlace(this);
+        this.photos.add(photo);
+    }
 }
