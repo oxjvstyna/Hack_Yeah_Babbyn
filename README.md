@@ -38,9 +38,6 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
 
 ---
 
-
----
-
 ## 🛠️ Backend Setup (Spring Boot + PostgreSQL)
 
 1. Ensure **Docker Desktop** or **Docker Daemon** is running.  
@@ -71,12 +68,6 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
    ```bash
    npx expo start --tunnel
    ```
+3. Navigate to the expo go app on your mobile device.
 
 ***Enjoy your travel!***
-
-
-
-
-   
-
-
