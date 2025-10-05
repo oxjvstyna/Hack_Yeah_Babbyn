@@ -53,6 +53,11 @@ public class UserController {
         return ResponseEntity.ok(toDto(userService.addUserCountry(userId, countryIso)));
     }
 
+    @DeleteMapping("/{userId}/country")
+    public ResponseEntity<UserResponse> deleteCountry(@PathVariable("userId") Long userId, @RequestParam String countryIso) {
+        return ResponseEntity.ok(toDto(userService.deleteUserCountry(userId, countryIso)));
+    }
+
     @PostMapping("/{userId}/funRating")
     public ResponseEntity<UserResponse> addFunRating(@PathVariable("userId") Long userId, @RequestParam String countryIso, @RequestParam Float rating) {
         return ResponseEntity.ok(toDto(userService.addFunRating(userId, countryIso, rating)));
