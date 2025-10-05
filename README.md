@@ -48,8 +48,9 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
    docker-compose up
    ```
 4. CLick on the green button next to the Application.calss to start the application
-5. In case you encounter some error with connection (password issues) change the ports for the database in the aplication.yml (localhost:5432 to localhost:55432) and docker-compose
-      - "5432:5432" -> "55432:5432"
+5. In case you encounter some error with connection (password issues) change the ports for the database in the
+      - aplication.yml: localhost:5432 -> localhost:55432) 
+      - docker-compose: "5432:5432" -> "55432:5432"
 6. For every application restart, restart also the database:
 
    ```bash
@@ -75,6 +76,6 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
 4. Navigate to the expo go app on your mobile device and scan generated QR code.
 > [!NOTE]
 > Keep in mind that you have to be in the same network (mobile device and your laptop) to run the application.
-> In Trippin/hooks/api.ts - baseURL has to be the same as the one under the generated QR code 
+> In Trippin/hooks/api.ts - BASE_URL has to be the same as the one under the generated QR code ("Metro waiting on...")
 
 ***Enjoy your travel!***
