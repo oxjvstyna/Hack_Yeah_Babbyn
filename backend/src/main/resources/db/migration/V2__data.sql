@@ -28,10 +28,10 @@ INSERT INTO places (country_id, name, width, length, description, rating, date) 
 
 -- ===== PLACE PHOTOS =====
 INSERT INTO place_photos (place_id, url, position) VALUES
-                                                       ((SELECT id FROM places WHERE name='Grand Canyon'), 'https://example.com/grand_canyon_1.jpg', 0),
-                                                       ((SELECT id FROM places WHERE name='Eiffel Tower'), 'https://example.com/eiffel_1.jpg', 0),
-                                                       ((SELECT id FROM places WHERE name='Mount Fuji'), 'https://example.com/fuji_1.jpg', 0),
-                                                       ((SELECT id FROM places WHERE name='Statue of Liberty'), 'https://example.com/liberty_1.jpg', 0);
+                                                       ((SELECT id FROM places WHERE name='Grand Canyon'), 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29', 0),
+                                                       ((SELECT id FROM places WHERE name='Eiffel Tower'), 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34', 0),
+                                                       ((SELECT id FROM places WHERE name='Mount Fuji'), 'https://images.unsplash.com/photo-1502082553048-f009c37129b9', 0),
+                                                       ((SELECT id FROM places WHERE name='Statue of Liberty'), 'https://images.unsplash.com/photo-1579403124613-88c4b3d83f41', 0);
 
 -- ===== COUNTRY RATINGS =====
 -- User 1 ratings
