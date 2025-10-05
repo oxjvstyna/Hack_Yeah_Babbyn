@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Star from "./Star";
 import {
   View,
-  Text,
   Image,
   ScrollView,
   Alert,
@@ -11,9 +10,16 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { mainStyle } from "@/properties/styles/mainStyles";
 import { paddingSize } from "@/properties/vars";
-export default function ModalMyTripsTab({ styles, ...props }) {
+import { Place } from "@/hooks/api";
+type Props = {
+  styles: any;
+  iso: string;
+  ratingFun: number;
+  ratingSec: number;
+  places: Place[];
+};
+export default function ModalMyTripsTab({ styles, places, ...props }: Props) {
   const [uploaded, setUploaded] = useState<string[]>([]);
 
   const pickImages = async () => {
@@ -33,6 +39,9 @@ export default function ModalMyTripsTab({ styles, ...props }) {
       // TODO: wyślij na backend, jeśli masz endpoint (upload S3 itp.)
     }
   };
+
+  const toDataUri = (b64: string) =>
+    b64.startsWith("data:image") ? b64 : `data:image/jpeg;base64,${b64}`;
 
   return (
     <ScrollView
@@ -62,20 +71,22 @@ export default function ModalMyTripsTab({ styles, ...props }) {
         </TouchableOpacity>
 
         {/* 2) Wgrane zdjęcia użytkownika */}
-        {uploaded.map((uri) => (
+        {places.map((p) => (
           <Image
-            key={uri}
-            source={{ uri }}
+            key={`place-${p.id}`}
+            source={{ uri: toDataUri(p.photo) }}
             style={styles.galleryImage}
             resizeMode="cover"
+            accessible
+            accessibilityLabel={p.name || `Photo ${p.id}`}
           />
         ))}
 
-        {/* 3) Twoje dotychczasowe placeholdery / zdjęcia */}
-        {[1, 2, 3].map((id) => (
+        {/* ewentualnie świeżo wybrane lokalnie (jeszcze nie wysłane) */}
+        {uploaded.map((uri) => (
           <Image
-            key={`ph-${id}`}
-            source={require("@/assets/images/aa.png")}
+            key={`upl-${uri}`}
+            source={{ uri }}
             style={styles.galleryImage}
             resizeMode="cover"
           />

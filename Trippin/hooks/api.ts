@@ -16,10 +16,24 @@ export type UserRatingsResponse = {
   countryRatings: CountryRating[];
 };
 
-export type PlacesResponse = {
+export type Place = {
+  id?: number;
+  date?: string;
+  name: string;
+  photo: string; // base64 (bez/ze wstępem data:)
+};
+
+export type PlacesServerResponse = {
   securityRating: number | null;
   funRating: number | null;
-  placesPerUser: Record<string, unknown[]>;
+  placesPerUser: Record<string, Place[]>; // <-- klucz: userId jako string
+};
+
+// to zwrócimy do UI (już spłaszczone)
+export type CountryPlacesResponse = {
+  securityRating: number | null;
+  funRating: number | null;
+  places: Place[];
 };
 
 export async function getCountries(): Promise<string[]> {
@@ -215,69 +229,60 @@ export async function secRating(
 }
 
 export async function getUserPlacesByCountry(
-  iso: string
-): Promise<PlacesResponse> {
+  iso: string,
+  userId = 1
+): Promise<CountryPlacesResponse> {
   if (!/^[A-Z]{3}$/.test(iso)) {
-    throw new Error(
-      "Invalid ISO code (expected ISO 3166-1 alpha-3, e.g. 'RUS')."
-    );
+    throw new Error("Invalid ISO code (expected ISO 3166-1 alpha-3).");
   }
 
   const url = new URL(`${BASE_URL}/user/places/${userId}`);
   url.searchParams.set("countryIso", iso);
-
-  console.log(url);
 
   const r = await fetch(url.toString(), {
     method: "GET",
     headers: { Accept: "application/json" },
     cache: "no-store",
   });
-
   if (!r.ok) {
     const msg = await r.text().catch(() => "");
     throw new Error(`HTTP ${r.status}${msg ? ` – ${msg}` : ""}`);
   }
-
-  // 204 No Content → zwróć pusty, ale poprawnie ukształtowany obiekt
-  if (r.status === 204) {
-    const key = String(userId);
-    return {
-      securityRating: null,
-      funRating: null,
-      placesPerUser: { [key]: [] },
-    };
-  }
+  if (r.status === 204)
+    return { securityRating: null, funRating: null, places: [] };
 
   const data: unknown = await r.json();
 
-  console.log(data);
+  const isPlace = (x: any): x is Place =>
+    x &&
+    typeof x === "object" &&
+    typeof x.name === "string" &&
+    typeof x.photo === "string" &&
+    (x.id === undefined || typeof x.id === "number") &&
+    (x.date === undefined || typeof x.date === "string");
 
-  if (!data || typeof data !== "object") {
-    throw new Error("Invalid payload: expected object.");
-  }
-  const d = data as Partial<PlacesResponse>;
-
-  const isNumOrNull = (x: unknown): x is number | null =>
-    x === null || typeof x === "number";
-
-  const isRecordOfArrays = (x: unknown): x is Record<string, unknown[]> => {
-    if (!x || typeof x !== "object") return false;
-    for (const v of Object.values(x as Record<string, unknown>)) {
-      if (!Array.isArray(v)) return false;
-    }
-    return true;
-  };
+  if (!data || typeof data !== "object") throw new Error("Invalid payload.");
+  const d = data as Partial<PlacesServerResponse>;
+  const map = d.placesPerUser;
 
   if (
-    !isNumOrNull(d.securityRating) ||
-    !isNumOrNull(d.funRating) ||
-    !isRecordOfArrays(d.placesPerUser)
+    (d.securityRating !== null && typeof d.securityRating !== "number") ||
+    (d.funRating !== null && typeof d.funRating !== "number") ||
+    !map ||
+    typeof map !== "object"
   ) {
-    throw new Error(
-      "Invalid payload: expected { securityRating:number|null, funRating:number|null, placesPerUser: Record<string, unknown[]> }."
-    );
+    throw new Error("Invalid payload shape.");
   }
 
-  return d as PlacesResponse;
+  let places: Place[] = [];
+  const all = Object.values(map).flatMap((v) =>
+    Array.isArray(v) ? v : []
+  ) as unknown[];
+  places = all.filter(isPlace) as Place[];
+
+  return {
+    securityRating: d.securityRating ?? null,
+    funRating: d.funRating ?? null,
+    places,
+  };
 }
