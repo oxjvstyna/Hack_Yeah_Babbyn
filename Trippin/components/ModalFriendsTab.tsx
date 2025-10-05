@@ -60,19 +60,28 @@ export default function ModalFriendsTab({
 
       <Text style={styles.sectionTitle}>Friends gallery</Text>
       <View style={styles.galleryGrid}>
-        {photos.map(({ uid, place, key }) => (
-          <ImageBackground
-            key={key}
-            source={{ uri: toDataUri(place.photo) }}
-            style={[styles.galleryImage]} // kontener kafelka
-            imageStyle={local.img} // tylko borderRadius
-            resizeMode="cover"
-          >
-            <View style={local.badge}>
-              <Text style={local.badgeText}>{names[uid]}</Text>
-            </View>
-          </ImageBackground>
-        ))}
+        {photos.flatMap(({ uid, place }, i) =>
+          (place.photo ?? []).map((b64, j) => {
+            const uri = toDataUri(b64); // zwróci data:... albo undefined
+            if (!uri) return null;
+
+            return (
+              <ImageBackground
+                key={`u${uid}-${place.id ?? i}-img-${j}`}
+                source={{ uri }}
+                style={[styles.galleryImage, local.imgContainer]} // kontener kafelka
+                imageStyle={local.img} // tylko borderRadius
+                resizeMode="cover"
+              >
+                <View style={local.badge}>
+                  <Text style={local.badgeText}>
+                    {names?.[uid] ?? `User ${uid}`}
+                  </Text>
+                </View>
+              </ImageBackground>
+            );
+          })
+        )}
       </View>
     </ScrollView>
   );
