@@ -14,12 +14,16 @@ import primaryColors from "@/properties/colors";
 import ModalMyTripsTab from "@/components/ModalMyTripsTab";
 import ModalFriendsTab from "@/components/ModalFriendsTab";
 import Button from "./Button";
+import { postCountry } from "@/hooks/api";
 
 type CountryInfoModalProps = {
   visible: boolean;
   name?: string;
   onClose: () => void;
   children?: React.ReactNode;
+  visited: boolean;
+  iso: string;
+  wasHere: (was: boolean) => void;
 };
 
 export default function CountryInfoModal({
@@ -27,16 +31,25 @@ export default function CountryInfoModal({
   name,
   onClose,
   children,
+  visited,
+  iso,
+  wasHere,
 }: CountryInfoModalProps) {
   const [selectedTab, setSelectedTab] = useState<"trips" | "friends">("trips");
-  const [isVisited, setIsVisited] = useState<boolean>(false);
+  const [isVisited, setIsVisited] = useState<boolean>(visited);
 
   React.useEffect(() => {
     if (visible) {
       setSelectedTab("trips");
-      setIsVisited(false);
+      setIsVisited(visited);
     }
   }, [name]);
+
+  const click = () => {
+    postCountry(iso, !isVisited);
+    wasHere(!isVisited);
+    setIsVisited(!isVisited);
+  };
 
   return (
     <Modal
@@ -119,7 +132,7 @@ export default function CountryInfoModal({
         <Button
           title={isVisited ? "You've been here!" : "I was here"}
           variant={isVisited ? "secondary" : "secondaryOutline"}
-          onPress={() => setIsVisited((prev) => !prev)}
+          onPress={click}
         ></Button>
 
         {/* Tabs */}
@@ -286,7 +299,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 40,
-
   },
   galleryGrid: {
     flexDirection: "row",

@@ -6,6 +6,7 @@ import world from "@/assets/countries.min.json";
 import CountryInfoModal from "@/components/CountryInfoModal";
 import primaryColors from "@/properties/colors";
 import { overrides } from "@/properties/mapcolors";
+import { getCountries } from "@/hooks/api";
 
 type Position = [number, number];
 type LinearRing = Position[];
@@ -32,7 +33,7 @@ type RNPolygon = {
   holes: LatLng[][];
   iso?: string;
   name?: string;
-  bbox: { minLat: number; maxLat: number; minLng: number; maxLng: number }; // ✅ do filtrowania
+  bbox: { minLat: number; maxLat: number; minLng: number; maxLng: number };
 };
 
 const p2ll = ([lng, lat]: Position): LatLng => ({
@@ -100,16 +101,19 @@ const darkStyle = [
 export default function WorldGoogleMap() {
   const [ready, setReady] = useState(false);
   const [selectedIso, setSelectedIso] = useState<string | null>(null);
+  const [highlightedCountries, setHighlightedCountries] = useState<string[]>(
+    []
+  );
 
-  const highlightedCountries: string[] = [
-    "POL",
-    "DEU",
-    "ESP",
-    "USA",
-    "JPN",
-    "RUS",
-    "NGA",
-  ];
+  // const highlightedCountries: string[] = [
+  //   "POL",
+  //   "DEU",
+  //   "ESP",
+  //   "USA",
+  //   "JPN",
+  //   "RUS",
+  //   "NGA",
+  // ];
 
   const { polygons, byIso } = useMemo(() => {
     const fc = world as FeatureCollection;
@@ -125,8 +129,25 @@ export default function WorldGoogleMap() {
   }, []);
 
   useEffect(() => {
-    setReady(true);
+    setReady(true); // pokaż mapę od razu, a highlighty dociągną się później
+    let alive = true;
+    (async () => {
+      try {
+        const v = await getCountries(); // np. ["POL","DEU","ESP"]
+        if (alive) setHighlightedCountries(v);
+      } catch (e) {
+        console.error("getCountries failed:", e);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
   }, []);
+
+  const updateCountries = async () => {
+    const v = await getCountries();
+    setHighlightedCountries(v);
+  };
 
   if (!ready) return <View style={{ flex: 1, backgroundColor: "#0b1220" }} />;
 
@@ -184,6 +205,23 @@ export default function WorldGoogleMap() {
         visible={!!selectedIso}
         name={selectedIso ? byIso.get(selectedIso) ?? selectedIso : ""}
         onClose={() => setSelectedIso(null)}
+        visited={
+          selectedIso ? highlightedCountries.includes(selectedIso) : false
+        }
+        iso={selectedIso ? selectedIso : ""}
+        wasHere={(was) => {
+          if (selectedIso) {
+            if (was) {
+              highlightedCountries.push(selectedIso);
+            } else {
+              const index = highlightedCountries.indexOf(selectedIso);
+              console.log(index);
+              if (index > -1) {
+                highlightedCountries.splice(index, 1);
+              }
+            }
+          }
+        }}
       />
     </View>
   );

@@ -49,8 +49,9 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/country")
-    public ResponseEntity<UserResponse> saveCountry(@PathVariable("userId") Long userId, @RequestParam String countryIso) {
-        return ResponseEntity.ok(toDto(userService.addUserCountry(userId, countryIso)));
+    public ResponseEntity<String> saveCountry(@PathVariable("userId") Long userId, @RequestParam String countryIso) {
+        userService.addUserCountry(userId, countryIso);
+        return ResponseEntity.ok("OK");
     }
 
     @DeleteMapping("/{userId}/country")
@@ -73,7 +74,7 @@ public class UserController {
         return ResponseEntity.ok(toDto(userService.addUserPlace(userId, placeRequest)));
     }
 
-    @GetMapping("/{userId}/countries/")
+    @GetMapping("/{userId}/countries")
     public List<String> getCountries(@PathVariable("userId") Long userId) {
         return countryRatingService.getCountriesIsos(userId);
     }
