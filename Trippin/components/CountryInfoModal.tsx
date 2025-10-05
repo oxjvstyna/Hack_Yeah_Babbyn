@@ -15,7 +15,7 @@ import primaryColors from "@/properties/colors";
 import ModalMyTripsTab from "@/components/ModalMyTripsTab";
 import ModalFriendsTab from "@/components/ModalFriendsTab";
 import Button from "./Button";
-import { getUserPlacesByCountry, postCountry } from "@/hooks/api";
+import { getUserPlacesByCountry, Place, postCountry } from "@/hooks/api";
 
 type CountryInfoModalProps = {
   visible: boolean;
@@ -41,6 +41,7 @@ export default function CountryInfoModal({
   const [starFun, setStarFun] = useState<number>(0);
   const [starSec, setStarSec] = useState<number>(0);
   const [ratingsLoaded, setRatingsLoaded] = useState(false);
+  const [places, setPlaces] = useState<Place[]>([]);
 
   React.useEffect(() => {
     console.log("hehe");
@@ -58,12 +59,14 @@ export default function CountryInfoModal({
             if (alive) {
               setStarFun(v.funRating ? v.funRating : 0);
               setStarSec(v.securityRating ? v.securityRating : 0);
+              setPlaces(Array.isArray(v.places) ? v.places : []);
               setRatingsLoaded(true);
               console.log("bbb");
             }
           } else {
             setStarFun(0);
             setStarSec(0);
+            setPlaces([]);
             setRatingsLoaded(true);
           }
         } catch (e) {
@@ -202,16 +205,15 @@ export default function CountryInfoModal({
         {selectedTab === "friends" ? (
           <ModalFriendsTab styles={styles} />
         ) : ratingsLoaded ? (
-          // ⬇️ KLUCZ: wymuś remount, żeby startingValue się przyjęło
           <ModalMyTripsTab
             key={`mytrips-${iso}-${starFun}-${starSec}`}
             styles={styles}
             iso={iso}
             ratingFun={starFun}
             ratingSec={starSec}
+            places={places}
           />
         ) : (
-          // prosty placeholder (opcjonalnie skeleton)
           <Text style={{ color: "#666" }}>Loading ratings…</Text>
         )}
 
