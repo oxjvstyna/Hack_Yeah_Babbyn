@@ -215,7 +215,6 @@ export default function WorldGoogleMap() {
               highlightedCountries.push(selectedIso);
             } else {
               const index = highlightedCountries.indexOf(selectedIso);
-              console.log(index);
               if (index > -1) {
                 highlightedCountries.splice(index, 1);
               }

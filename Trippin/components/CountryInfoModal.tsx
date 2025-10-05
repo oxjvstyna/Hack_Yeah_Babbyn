@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -14,7 +15,7 @@ import primaryColors from "@/properties/colors";
 import ModalMyTripsTab from "@/components/ModalMyTripsTab";
 import ModalFriendsTab from "@/components/ModalFriendsTab";
 import Button from "./Button";
-import { postCountry } from "@/hooks/api";
+import { getUserPlacesByCountry, postCountry } from "@/hooks/api";
 
 type CountryInfoModalProps = {
   visible: boolean;
@@ -37,11 +38,42 @@ export default function CountryInfoModal({
 }: CountryInfoModalProps) {
   const [selectedTab, setSelectedTab] = useState<"trips" | "friends">("trips");
   const [isVisited, setIsVisited] = useState<boolean>(visited);
+  const [starFun, setStarFun] = useState<number>(0);
+  const [starSec, setStarSec] = useState<number>(0);
+  const [ratingsLoaded, setRatingsLoaded] = useState(false);
 
   React.useEffect(() => {
+    console.log("hehe");
     if (visible) {
       setSelectedTab("trips");
       setIsVisited(visited);
+      setRatingsLoaded(false);
+
+      let alive = true;
+      (async () => {
+        try {
+          if (visited) {
+            console.log("aaa");
+            const v = await getUserPlacesByCountry(iso);
+            if (alive) {
+              setStarFun(v.funRating ? v.funRating : 0);
+              setStarSec(v.securityRating ? v.securityRating : 0);
+              setRatingsLoaded(true);
+              console.log("bbb");
+            }
+          } else {
+            setStarFun(0);
+            setStarSec(0);
+            setRatingsLoaded(true);
+          }
+        } catch (e) {
+          console.error("getCountries failed:", e);
+          if (alive) setRatingsLoaded(true);
+        }
+      })();
+      return () => {
+        alive = false;
+      };
     }
   }, [name]);
 
@@ -169,8 +201,18 @@ export default function CountryInfoModal({
         {/* Tab Content */}
         {selectedTab === "friends" ? (
           <ModalFriendsTab styles={styles} />
+        ) : ratingsLoaded ? (
+          // ⬇️ KLUCZ: wymuś remount, żeby startingValue się przyjęło
+          <ModalMyTripsTab
+            key={`mytrips-${iso}-${starFun}-${starSec}`}
+            styles={styles}
+            iso={iso}
+            ratingFun={starFun}
+            ratingSec={starSec}
+          />
         ) : (
-          <ModalMyTripsTab styles={styles} />
+          // prosty placeholder (opcjonalnie skeleton)
+          <Text style={{ color: "#666" }}>Loading ratings…</Text>
         )}
 
         {/* Close Button */}
