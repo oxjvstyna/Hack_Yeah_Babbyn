@@ -12,13 +12,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private finalUserRepository userRepository;
     @Autowired
     private CountryRepository countryRepository;
     @Autowired
@@ -67,3 +69,22 @@ public class UserService {
         return userRepository.save(user);
     }
 }
+
+    public List<Long> getUserAndFriendsIds(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<User> allUsers = new ArrayList<>();
+        allUsers.add(user);
+        allUsers.addAll(user.getFriends());
+
+        return allUsers.stream()
+                .map(User::getId)
+                .toList();
+    }
+
+
+
+
+}
+

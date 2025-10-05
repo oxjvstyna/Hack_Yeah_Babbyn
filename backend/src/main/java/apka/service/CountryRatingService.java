@@ -11,12 +11,17 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Optional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CountryRatingService {
 
+    @Autowired
+    private CountryRatingRepository countryRatingRepository;
     private final CountryRatingRepository countryRatingRepository;
     private UserRepository userRepository;
     private CountryRepository countryRepository;
@@ -43,12 +48,28 @@ public class CountryRatingService {
         return countryRatingRepository.save(rating);
     }
 
-    public List<String> getCountriesNames(Long userId) {
+    public List<String> getCountriesIsos(Long userId) {
         return countryRatingRepository.findByUserId(userId)
                 .stream()
                 .map(CountryRating::getCountry)
                 .map(Country::getIso3)
                 .toList();
+    }
+
+    public Double getAverageFunRating(List<Long> userIds, Long countryId){
+        Double rating = countryRatingRepository.findAverageFunRatingByCountryAndUserIds(countryId, userIds);
+        return roundToOneDecimal(rating);
+    }
+
+
+    public Double getAverageSecurityRating(List<Long> userIds, Long countryId){
+        Double rating = countryRatingRepository.findAverageSecurityRatingByCountryAndUserIds(countryId, userIds);
+        return roundToOneDecimal(rating);
+    }
+    private double roundToOneDecimal(double rating) {
+        return BigDecimal.valueOf(rating)
+                .setScale(1, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     private CountryRating addNewCountryRating(User user, Country country) {

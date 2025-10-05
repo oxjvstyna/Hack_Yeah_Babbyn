@@ -15,7 +15,7 @@ import java.util.Optional;
 public class CountryService {
 
     @Autowired
-    private CountryRepository countryRepository;
+    private final CountryRepository countryRepository;
 
     @Transactional
     public Country addOrRetrieveCountry(String countryName) {
@@ -50,5 +50,11 @@ public class CountryService {
             }
         }
         return null;
+    }
+
+    public Long getCountryIdByIso3(String iso3) {
+        Country country = countryRepository.findByIso3(iso3)
+                .orElseThrow(() -> new RuntimeException("Country not found for iso3: " + iso3));
+        return country.getId();
     }
 }
