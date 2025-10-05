@@ -35,7 +35,6 @@ public class UserController {
 
     @PostMapping("/{userId}/country")
     public ResponseEntity<User> saveCountry(@PathVariable("userId") Long userId, @RequestParam String countryName) {
-        System.out.println(countryName);
         return ResponseEntity.ok(userService.addUserCountry(userId, countryName));
     }
 

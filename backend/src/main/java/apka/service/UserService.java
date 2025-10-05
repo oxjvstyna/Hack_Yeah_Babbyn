@@ -40,8 +40,6 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("user not found"));
         CountryRating countryRating = countryRatingService.addOrRetrieveCountryRating(user, country);
         user.addCountryRating(countryRating);
-        user.getCountryRatings()
-                .forEach(rating -> System.out.println(rating.getCountry().getName()));
         return userRepository.save(user);
     }
 

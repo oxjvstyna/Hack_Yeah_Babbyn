@@ -49,10 +49,6 @@ public class CountryRatingService {
         return countryRatingRepository.findByUserId(userId)
                 .stream()
                 .map(CountryRating::getCountry)
-                .map(r -> {
-                    System.out.print(r.getIso3());
-                    return r;
-                })
                 .map(Country::getIso3)
                 .toList();
     }
