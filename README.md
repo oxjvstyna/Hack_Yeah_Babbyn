@@ -74,8 +74,8 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
    ```bash
    npx expo start --tunnel
    ```
-4. In Trippin/hooks/api.ts - BASE_URL has to be the same as the one under the generated QR code ("Metro waiting on..."). Keep the port 8080!!!
-5. Navigate to the expo go app on your mobile device and scan generated QR code.
+4. In Trippin/hooks/api.ts BASE_URL has to be http://<your-computer-LAN-IP>:8080 (the same as the one under the generated QR code ("Metro waiting on..."). Keep the port 8080!!!)
+6. Navigate to the expo go app on your mobile device and scan generated QR code.
 > [!IMPORTANT]
 > Keep in mind that you have to be in the same network (mobile device and your laptop) to run the application.
 
