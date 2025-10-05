@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class CountryService {
 
     private CountryIsoMapper countryIsoMapper;
-    private CountryRepository countryRepository;
+    private final CountryRepository countryRepository;
 
     public Country addNewCountry(String countryName){
         String iso3 = countryIsoMapper.toIso3FromEnglish(countryName);
@@ -21,5 +21,11 @@ public class CountryService {
                         .iso3(iso3)
                         .name(countryName)
                         .build());
+    }
+
+    public Long getCountryIdByIso3(String iso3) {
+        Country country = countryRepository.findByIso3(iso3)
+                .orElseThrow(() -> new RuntimeException("Country not found for iso3: " + iso3));
+        return country.getId();
     }
 }

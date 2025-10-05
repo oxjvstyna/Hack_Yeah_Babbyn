@@ -1,8 +1,7 @@
 package apka.repository;
 
-import apka.db.Country;
 import apka.db.CountryRating;
-import apka.db.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,5 +14,29 @@ import java.util.Optional;
 public interface CountryRatingRepository extends JpaRepository<CountryRating, Long> {
     Optional<CountryRating> findByCountryIdAndUserId(Long countryId, Long userId);
     List<CountryRating> findByUserId(Long userId);
+
+
+    @Query("""
+        SELECT AVG(cr.funRating)
+        FROM CountryRating cr
+        WHERE cr.country.id = :countryId
+          AND cr.user.id IN :userIds
+    """)
+    Double findAverageFunRatingByCountryAndUserIds(
+            @Param("countryId") Long countryId,
+            @Param("userIds") List<Long> userIds
+    );
+
+
+    @Query("""
+        SELECT AVG(cr.securityRating)
+        FROM CountryRating cr
+        WHERE cr.country.id = :countryId
+          AND cr.user.id IN :userIds
+    """)
+    Double findAverageSecurityRatingByCountryAndUserIds(
+            @Param("countryId") Long countryId,
+            @Param("userIds") List<Long> userIds
+    );
 
 }

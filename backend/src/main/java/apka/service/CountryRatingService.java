@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 import java.util.List;
 
@@ -18,11 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CountryRatingService {
 
-    private final CountryRatingRepository countryRatingRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CountryRepository countryRepository;
     @Autowired
     private CountryRatingRepository countryRatingRepository;
 
@@ -42,12 +39,28 @@ public class CountryRatingService {
         return countryRatingRepository.save(rating);
     }
 
-    public List<String> getCountriesNames(Long userId) {
+    public List<String> getCountriesIsos(Long userId) {
         return countryRatingRepository.findByUserId(userId)
                 .stream()
                 .map(CountryRating::getCountry)
                 .map(Country::getIso3)
                 .toList();
+    }
+
+    public Double getAverageFunRating(List<Long> userIds, Long countryId){
+        Double rating = countryRatingRepository.findAverageFunRatingByCountryAndUserIds(countryId, userIds);
+        return roundToOneDecimal(rating);
+    }
+
+
+    public Double getAverageSecurityRating(List<Long> userIds, Long countryId){
+        Double rating = countryRatingRepository.findAverageSecurityRatingByCountryAndUserIds(countryId, userIds);
+        return roundToOneDecimal(rating);
+    }
+    private double roundToOneDecimal(double rating) {
+        return BigDecimal.valueOf(rating)
+                .setScale(1, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
 }
