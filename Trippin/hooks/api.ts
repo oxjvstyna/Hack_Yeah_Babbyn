@@ -232,7 +232,14 @@ export async function secRating(
 export async function getUserPlacesByCountry(
   iso: string
 ): Promise<PlacesServerResponse> {
-  if (!/^[A-Z]{3}$/.test(iso)) throw new Error("Invalid ISO code.");
+  if (!/^[A-Z]{3}$/.test(iso))
+    return {
+      securityRating: null,
+      funRating: null,
+      placesPerUser: {},
+      names: {},
+      photos: {},
+    };
 
   const url = new URL(`${BASE_URL}/user/places/${userId}`);
   url.searchParams.set("countryIso", iso);

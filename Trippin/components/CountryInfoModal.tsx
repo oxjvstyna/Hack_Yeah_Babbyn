@@ -54,9 +54,10 @@ export default function CountryInfoModal({
       let alive = true;
       (async () => {
         try {
+          const v = await getUserPlacesByCountry(iso);
+          // console.log(v);
           if (visited) {
             console.log("aaa");
-            const v = await getUserPlacesByCountry(iso);
             if (alive) {
               setStarFun(v.funRating ? v.funRating : 0);
               setStarSec(v.securityRating ? v.securityRating : 0);
@@ -69,9 +70,9 @@ export default function CountryInfoModal({
           } else {
             setStarFun(0);
             setStarSec(0);
-            setPlacesByUser({});
-            setNames({});
-            setPhotos({});
+            setPlacesByUser(v.placesPerUser ?? {});
+            setNames(v.names ?? {});
+            setPhotos(v.photos ?? {});
             setRatingsLoaded(true);
           }
         } catch (e) {
