@@ -1,0 +1,85 @@
+package apka.service;
+
+
+import apka.db.Country;
+import apka.db.CountryRating;
+import apka.db.User;
+import apka.repository.CountryRatingRepository;
+import apka.repository.CountryRepository;
+import apka.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Optional;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class CountryRatingService {
+
+    @Autowired
+    private CountryRatingRepository countryRatingRepository;
+    private UserRepository userRepository;
+    private CountryRepository countryRepository;
+
+    @Transactional
+    public CountryRating addOrRetrieveCountryRating(User user, Country country) {
+        return countryRatingRepository
+                .findByUser_IdAndCountry_Id(user.getId(), country.getId())
+                .orElseGet(() -> {
+                    CountryRating rating = new CountryRating();
+                    rating.setUser(user);
+                    rating.setCountry(country);
+                    rating.setFunRating(null);
+                    rating.setSecurityRating(null);
+                    return countryRatingRepository.save(rating);
+                });
+    }
+
+    @Transactional
+    public CountryRating addCountryRating(User user, Country country, Float funRating, Float securityRating) {
+        CountryRating rating = addOrRetrieveCountryRating(user, country);
+        rating.setFunRating(funRating);
+        rating.setSecurityRating(securityRating);
+        return countryRatingRepository.save(rating);
+    }
+
+    public List<String> getCountriesIsos(Long userId) {
+        return countryRatingRepository.findByUserId(userId)
+                .stream()
+                .map(CountryRating::getCountry)
+                .map(Country::getIso3)
+                .toList();
+    }
+
+    public Double getAverageFunRating(List<Long> userIds, Long countryId){
+        Double rating = countryRatingRepository.findAverageFunRatingByCountryAndUserIds(countryId, userIds);
+        return roundToOneDecimal(rating);
+    }
+
+
+    public Double getAverageSecurityRating(List<Long> userIds, Long countryId){
+        Double rating = countryRatingRepository.findAverageSecurityRatingByCountryAndUserIds(countryId, userIds);
+        return roundToOneDecimal(rating);
+    }
+    private double roundToOneDecimal(Double rating) {
+        if (rating == null) {
+            return 0.0;
+        }
+        return BigDecimal.valueOf(rating)
+                .setScale(1, RoundingMode.HALF_UP)
+                .doubleValue();
+    }
+
+    private CountryRating addNewCountryRating(User user, Country country) {
+        return countryRatingRepository.save(CountryRating.builder()
+                .user(user)
+                .country(country)
+                .build());
+    }
+
+}
