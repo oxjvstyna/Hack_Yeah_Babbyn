@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -112,5 +113,24 @@ public class UserService {
                 .toList();
     }
 
+    public Map<Long, String> getUserAndFriendsNames(List<Long> userIds) {
+        List<User> users = userRepository.findAllById(userIds);
+
+        return users.stream()
+                .collect(Collectors.toMap(
+                        User::getId,
+                        User::getName
+                ));
+    }
+
+    public Map<Long, String> getPhoto(List<Long> userIds) {
+        List<User> users = userRepository.findAllById(userIds);
+
+        return users.stream()
+                .collect(Collectors.toMap(
+                        User::getId,
+                        User::getProfilePhoto
+                ));
+    }
 }
 

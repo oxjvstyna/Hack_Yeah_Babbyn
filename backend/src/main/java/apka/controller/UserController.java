@@ -86,14 +86,15 @@ public class UserController {
 
         List<Long> usersIds = userService.getUserAndFriendsIds(userId);
         Long countryId = countryService.getCountryIdByIso3(countryIso);
-        System.out.println("countryId: " + countryId);
 
         Map<Long, List<PlaceSummary>> placeSummariesPerUser = placesService.mapUsersToPlaceSummaries(usersIds, countryId);
+        Map<Long, String> friendNames = userService.getUserAndFriendsNames(usersIds);
+        Map<Long, String> friendsPhotos = userService.getPhoto(usersIds);
 
         Double funRating = countryRatingService.getAverageFunRating(usersIds, countryId);
         Double securityRating = countryRatingService.getAverageSecurityRating(usersIds, countryId);
 
-        return new CountrySummary(securityRating, funRating, placeSummariesPerUser);
+        return new CountrySummary(securityRating, funRating, placeSummariesPerUser, friendNames, friendsPhotos);
     }
 
     @PostMapping("/{userId}/friend/{friendId}")

@@ -32,6 +32,9 @@ public class User {
     @Column()
     private String name;
 
+    @Column()
+    private String profilePhoto;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("user-countryRatings")
     private Set<CountryRating> countryRatings = new HashSet<>();
