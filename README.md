@@ -40,8 +40,9 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
 
 ## 🛠️ Backend Setup (Spring Boot + PostgreSQL)
 
-1. Ensure **Docker Desktop** or **Docker Daemon** is running.  
+1. Ensure **Docker Desktop** or **Docker Daemon** is running.
 2. Ensure you're using Intelij Idea from Application.class
+(In intelij open just the backend folder)
 3. Navigate to the backend folder:
    ```bash
    cd backend
@@ -57,7 +58,9 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
 
 ## 📱 Install dependencies 
 1. Install *expo go* app on your phone
-2. Navigate to the Trippin folder and run:
+> [!TIP]
+> IOS system prefered on the mobile device.
+3. Navigate to the Trippin folder and run:
 
    ```bash
    npm install
@@ -68,6 +71,9 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
    ```bash
    npx expo start --tunnel
    ```
-3. Navigate to the expo go app on your mobile device.
+4. Navigate to the expo go app on your mobile device and scan generated QR code.
+> [!NOTE]
+> Keep in mind that you have to be in the same network (mobile device and your laptop) to run the application.
+> In Trippin/hooks/api.ts - baseURL has to be the same as the one under the generated QR code 
 
 ***Enjoy your travel!***
