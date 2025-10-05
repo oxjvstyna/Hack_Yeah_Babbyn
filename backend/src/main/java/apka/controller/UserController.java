@@ -40,13 +40,17 @@ public class UserController {
 
     @PostMapping("/{userId}/place")
     public ResponseEntity<User> savePlace(@PathVariable("userId") Long userId, @RequestBody PlaceRequest placeRequest) {
-        userService.addUserPlace(userId, placeRequest);
         return ResponseEntity.ok(userService.addUserPlace(userId, placeRequest));
     }
 
     @GetMapping("/{userId}/countries/")
     public List<String> getCountries(@PathVariable("userId") Long userId) {
         return countryRatingService.getCountriesNames(userId);
+    }
+
+    @PostMapping("/{userId}/friend/{friendId}")
+    public ResponseEntity<User> addFriend(@PathVariable("userId") Long userId, @PathVariable("friendId") Long friendId) {
+        return ResponseEntity.ok(userService.addFriend(userId, friendId));
     }
 
 }

@@ -20,6 +20,7 @@ public class PlaceService {
     @Transactional
     public Place addPlace(PlaceRequest req) {
         Country country = countryService.addOrRetrieveCountry(req.getCountryName());
+
         Place place = Place.builder()
                 .name(req.getName())
                 .description(req.getDescription())
@@ -29,9 +30,10 @@ public class PlaceService {
                 .rating(req.getRating())
                 .date(req.getDate())
                 .build();
-        List<String> photoUrls = req.getPhotos();
-        for (int i = 0; i < photoUrls.size(); i++) {
-            place.addPhoto(photoUrls.get(i));
+
+        List<String> photoUrls = req.getPhotos() != null ? req.getPhotos() : List.of();
+        for (String url : photoUrls) {
+            place.addPhoto(url);
         }
         return placeRepository.save(place);
     }

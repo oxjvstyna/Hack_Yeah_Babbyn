@@ -34,6 +34,16 @@ public class UserService {
     }
 
     @Transactional
+    public User addFriend(Long userId, Long friendId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("user not found"));
+        User friend = userRepository.findById(friendId)
+                .orElseThrow(() -> new RuntimeException("user not found"));
+        user.getFriends().add(friend);
+        return userRepository.save(user);
+    }
+
+    @Transactional
     public User addUserCountry(Long userId, String countryName) {
         Country country = countryService.addOrRetrieveCountry(countryName);
         User user = userRepository.findById(userId)
@@ -50,12 +60,10 @@ public class UserService {
 
         Country country = countryService.addOrRetrieveCountry(placeRequest.getCountryName());
         countryRatingService.addOrRetrieveCountryRating(user, country);
-
+        System.out.println("here");
         Place place = placeService.addPlace(placeRequest);
-        if (!user.getPlaceIds().contains(place.getId())) {
-            user.getPlaceIds().add(place.getId());
-        }
-
+        System.out.println("here");
+        user.getPlaceIds().add(place.getId());
         return userRepository.save(user);
     }
 }
