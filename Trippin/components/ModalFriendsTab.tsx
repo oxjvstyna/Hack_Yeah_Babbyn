@@ -5,12 +5,15 @@ import {
   ImageBackground,
   ScrollView,
   StyleSheet,
+  Image,
 } from "react-native";
 import type { Place } from "@/hooks/api";
 
 type Props = {
   styles: any;
   placesByUser: Record<string, Place[]>;
+  names: Record<string, string>;
+  userPhotos: Record<string, string>;
   currentUserId: number; // np. 1
 };
 
@@ -21,7 +24,10 @@ export default function ModalFriendsTab({
   styles,
   placesByUser,
   currentUserId,
+  userPhotos,
+  names,
 }: Props) {
+  console.log(names);
   // tylko inni niż bieżący użytkownik i tylko sekcje, które mają zdjęcia
   const otherEntries = Object.entries(placesByUser).filter(
     ([uid, arr]) =>
@@ -46,7 +52,11 @@ export default function ModalFriendsTab({
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Text style={styles.sectionTitle}>Friends who visited</Text>
-      <CountryFriends friends={friends} styles={styles} />
+      <CountryFriends
+        friends={friends}
+        styles={styles}
+        userPhotos={userPhotos}
+      />
 
       <Text style={styles.sectionTitle}>Friends gallery</Text>
       <View style={styles.galleryGrid}>
@@ -59,7 +69,7 @@ export default function ModalFriendsTab({
             resizeMode="cover"
           >
             <View style={local.badge}>
-              <Text style={local.badgeText}>User {uid}</Text>
+              <Text style={local.badgeText}>{names[uid]}</Text>
             </View>
           </ImageBackground>
         ))}
@@ -71,10 +81,14 @@ export default function ModalFriendsTab({
 function CountryFriends({
   friends,
   styles,
+  userPhotos,
 }: {
   friends: { uid: string; count: number }[];
   styles: any;
+  userPhotos: Record<string, string>;
 }) {
+  const toDataUri = (b64: string, mime = "image/jpeg") =>
+    b64.startsWith("data:") ? b64 : `data:${mime};base64,${b64}`;
   if (friends.length === 0) {
     return <Text style={{ opacity: 0.6 }}>No friends’ photos yet.</Text>;
   }
@@ -82,7 +96,15 @@ function CountryFriends({
     <View style={styles.friendContainer}>
       {friends.map((f) => (
         <View key={f.uid} style={styles.friendImage}>
-          <Text style={local.friendIdText}>{f.uid}</Text>
+          <Image
+            key={`profile-${f.uid}`}
+            source={{ uri: toDataUri(userPhotos[f.uid]) }}
+            style={[
+              styles.galleryImage,
+              { height: "100%", width: "100%", borderRadius: 40 },
+            ]}
+            resizeMode="cover"
+          />
         </View>
       ))}
     </View>

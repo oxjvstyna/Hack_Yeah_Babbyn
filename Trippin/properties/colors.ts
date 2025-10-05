@@ -4,7 +4,6 @@ const primaryColors = {
   white: "#ffffff",
   lightGrey: "#BBBBBB",
   gainsboroGrey: "#E0E0E0",
-  darkGrey: "#343434",
   babyBlue: "#EFF2F8",
   lightGreen: "#20DB01",
   red: "#ED1B24",
@@ -19,6 +18,7 @@ const primaryColors = {
   surfaceDark: "#001520",
   textDark: "#001520",
   gray: "#D9D9D9",
+  darkGrey: "#b1b1b1",
 };
 
 export default primaryColors;

@@ -8,25 +8,28 @@ import { generalStyle } from "@/properties/styles/generalStyles";
 const posts = [
   {
     id: 1,
-    username: "alex_travels",
+    username: "gosiak",
     trip: "Italy 🇮🇹",
-    image: require("@/assets/images/aa.png"),
+    image: require("@/assets/images/italy.jpg"),
+    profilePicture: require("@/assets/images/gosia.jpg"),
     caption: "Such a beautiful city full of history!",
     daysAgo: "3 days ago",
   },
   {
     id: 2,
-    username: "marta.world",
+    username: "olciaa",
     trip: "Japan 🇯🇵",
-    image: require("@/assets/images/aa.png"),
+    image: require("@/assets/images/japan.jpg"),
+    profilePicture: require("@/assets/images/ola.jpeg"),
     caption: "Cherry blossoms were absolutely stunning 🌸",
     daysAgo: "5 days ago",
   },
   {
     id: 3,
-    username: "johnny_explorer",
+    username: "oliwka",
     trip: "Iceland 🇮🇸",
-    image: require("@/assets/images/aa.png"),
+    image: require("@/assets/images/iceland.jpg"),
+    profilePicture: require("@/assets/images/oliwia.jpeg"),
     caption: "Hot springs and northern lights ❄️🔥",
     daysAgo: "1 week ago",
   },
@@ -42,7 +45,15 @@ export default function FriendActivityScreen() {
             <Text style={styles.daysAgo}>{post.daysAgo}</Text>
 
             <View style={styles.row}>
-              <View style={styles.avatarPlaceholder} />
+              <Image
+                source={post.profilePicture}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 20,
+                  marginRight: 7,
+                }}
+              />
               <Text style={styles.activityText}>
                 {post.username} has been to {post.trip}
               </Text>
@@ -50,10 +61,10 @@ export default function FriendActivityScreen() {
 
             <Image source={post.image} style={styles.postImage} />
             <View style={styles.pagination}>
-              <Text style={[styles.page, styles.activePage]}>1</Text>
-              <Text style={styles.page}>1</Text>
-              <Text style={styles.page}>...</Text>
-              <Text style={styles.page}>5</Text>
+              <Text style={[styles.page, styles.activePage]}>●</Text>
+              <Text style={styles.page}>●</Text>
+              <Text style={[styles.page, { fontSize: 16 }]}>...</Text>
+              <Text style={styles.page}>●</Text>
             </View>
 
             <Text style={styles.caption}>{post.caption}</Text>
@@ -98,12 +109,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 8,
   },
-  page: { marginHorizontal: 4, color: "#001F2D" },
+  page: { marginHorizontal: 2, fontSize: 12, color: primaryColors.gray },
   activePage: {
-    backgroundColor: "#007C91",
-    color: "#FFF",
+    color: primaryColors.secondary,
     borderRadius: 15,
-    paddingHorizontal: 8,
     paddingVertical: 2,
   },
   bottomNav: {

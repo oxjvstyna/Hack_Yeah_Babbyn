@@ -14,8 +14,8 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarButton: HapticTab,
         tabBarHideOnKeyboard: true,
-        tabBarActiveTintColor: primaryColors.darkGrey,
-        tabBarInactiveTintColor: primaryColors.lightGrey,
+        tabBarActiveTintColor: primaryColors.surfaceDark,
+        tabBarInactiveTintColor: primaryColors.gray,
         tabBarStyle: styles.tabBar,
         tabBarItemStyle: styles.tabBarItem,
       }}
