@@ -47,7 +47,7 @@ BeenThere isn’t just about tracking where you’ve been — it’s about conne
    ```bash
    docker-compose up
    ```
-4. CLick on the green button next to the Application.calss to start the application
+4. CLick on the green arrow button next to the Application.calss to start the application
 5. In case you encounter some error with connection (password issues) change the ports for the database in the
       - aplication.yml: localhost:5432 -> localhost:55432
       - docker-compose: "5432:5432" -> "55432:5432"
