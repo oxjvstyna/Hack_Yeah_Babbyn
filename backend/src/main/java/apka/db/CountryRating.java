@@ -23,7 +23,7 @@ import lombok.Setter;
 @Entity
 @Table(
         name = "country_ratings",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "country_id", "type"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "country_id"})
 )
 @NoArgsConstructor
 @AllArgsConstructor
