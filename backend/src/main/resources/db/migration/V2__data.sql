@@ -28,10 +28,10 @@ INSERT INTO places (country_id, name, width, length, description, rating, date) 
 
 -- ===== PLACE PHOTOS =====
 INSERT INTO place_photos (place_id, url, position) VALUES
-                                                       ((SELECT id FROM places WHERE name='Grand Canyon'), 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29', 0),
+                                                       ((SELECT id FROM places WHERE name='Grand Canyon'), 'https://images.unsplash.com/photo-1615551043360-33de8b5f410c?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0),
                                                        ((SELECT id FROM places WHERE name='Eiffel Tower'), 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34', 0),
-                                                       ((SELECT id FROM places WHERE name='Mount Fuji'), 'https://images.unsplash.com/photo-1502082553048-f009c37129b9', 0),
-                                                       ((SELECT id FROM places WHERE name='Statue of Liberty'), 'https://images.unsplash.com/photo-1579403124613-88c4b3d83f41', 0);
+                                                       ((SELECT id FROM places WHERE name='Mount Fuji'), 'https://images.unsplash.com/photo-1579525108311-0c5730b5799d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0),
+                                                       ((SELECT id FROM places WHERE name='Statue of Liberty'), 'https://plus.unsplash.com/premium_photo-1694475364942-b755ad751a40?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 0);
 
 -- ===== COUNTRY RATINGS =====
 -- User 1 ratings
