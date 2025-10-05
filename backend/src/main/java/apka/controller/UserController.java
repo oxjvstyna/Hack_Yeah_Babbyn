@@ -59,11 +59,6 @@ public class UserController {
         return ResponseEntity.ok(toDto(userService.deleteUserCountry(userId, countryIso)));
     }
 
-    @DeleteMapping("/{userId}/country")
-    public ResponseEntity<UserResponse> deleteCountry(@PathVariable("userId") Long userId, @RequestParam String countryIso) {
-        return ResponseEntity.ok(toDto(userService.deleteUserCountry(userId, countryIso)));
-    }
-
     @PostMapping("/{userId}/funRating")
     public ResponseEntity<UserResponse> addFunRating(@PathVariable("userId") Long userId, @RequestParam String countryIso, @RequestParam Float rating) {
         return ResponseEntity.ok(toDto(userService.addFunRating(userId, countryIso, rating)));
@@ -111,7 +106,7 @@ public class UserController {
         List<CountryRatingResponse> ratings = u.getCountryRatings().stream()
                 .map(r -> new CountryRatingResponse(r.getId(), r.getFunRating(), r.getSecurityRating()))
                 .toList();
-        return new UserResponse(u.getId(), u.getPlaceIds(), friendIds, ratings);
+        return new UserResponse(u.getId(), u.getName(), u.getPlaceIds(), friendIds, ratings);
     }
 
 }

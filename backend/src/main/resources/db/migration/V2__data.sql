@@ -1,10 +1,10 @@
 -- ========== TEST DATA ==========
 
 -- ===== USERS =====
-INSERT INTO users (id) VALUES
-                           (DEFAULT), -- User 1
-                           (DEFAULT), -- User 2
-                           (DEFAULT); -- User 3
+INSERT INTO users (id, name) VALUES
+                           (DEFAULT, 'oxjustyna'),
+                           (DEFAULT, 'olciaa'),
+                           (DEFAULT, 'ruda');
 
 -- ===== COUNTRIES =====
 INSERT INTO countries (iso3, name) VALUES

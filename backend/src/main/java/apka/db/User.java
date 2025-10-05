@@ -29,8 +29,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column()
+    private String name;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("user-countryRatings") // ✅
+    @JsonManagedReference("user-countryRatings")
     private Set<CountryRating> countryRatings = new HashSet<>();
 
     @ElementCollection
