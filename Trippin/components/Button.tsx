@@ -5,11 +5,12 @@ interface ButtonProps {
   variant: "secondary" | "secondaryOutline";
   title: string;
   onPress?: () => void;
+  color?: string;
 }
 
 const variantStyles = StyleSheet.create({
   secondary: {
-    backgroundColor: "#197B91", 
+    backgroundColor: "#197B91",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 25,
@@ -34,15 +35,28 @@ const variantStyles = StyleSheet.create({
   },
 });
 
-export default function Button({ variant, title, onPress }: ButtonProps) {
+export default function Button({
+  variant,
+  title,
+  onPress,
+  color,
+}: ButtonProps) {
   const isOutline = variant === "secondaryOutline";
 
   return (
     <TouchableOpacity
-      style={isOutline ? variantStyles.secondaryOutline : variantStyles.secondary}
+      style={
+        isOutline
+          ? variantStyles.secondaryOutline
+          : [variantStyles.secondary, color && { backgroundColor: color }]
+      }
       onPress={onPress}
     >
-      <Text style={isOutline ? variantStyles.textOutline : variantStyles.textSecondary}>
+      <Text
+        style={
+          isOutline ? variantStyles.textOutline : variantStyles.textSecondary
+        }
+      >
         {title}
       </Text>
     </TouchableOpacity>
