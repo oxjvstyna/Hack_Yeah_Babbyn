@@ -277,6 +277,17 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: "#D9D9D9",
   },
+  friendContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 5,
+  },
+  friendImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+
+  },
   galleryGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
